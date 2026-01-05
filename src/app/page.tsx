@@ -1,62 +1,79 @@
 import Header from "@/components/Header";
 import ThemeToggle from "@/components/ThemeToggle";
-import ProjectsSection from "@/components/ProjectsSection";
+import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
-const academyProjects = [
+const experiences = [
 	{
-		number: "01",
-		title: "RiSTOCK",
-		role: "Software Engineer",
+		title: "Apple Developer Academy",
+		role: "iOS Developer Mentee",
+		dateRange: "March 2025 - December 2025",
 		description:
-			"Multiplatform stock management application for iOS and macOS that prevents inventory problems through priority-based recommendations and CSV integration.",
-		technologies: "Technologies: SwiftUI, UIKit, AppKit",
-		year: "2025",
-		imageAlt: "RiSTOCK application interface showing stock management dashboard",
+			"Intensive 10-month program focused on multiplatform iOS and macOS development. Built 4 production-ready applications using Swift, SwiftUI, and UIKit with emphasis on clean architecture and user experience.",
+		keyProjects: ["RiSTOCK", "COCO.CO", "Kevin", "Swifter"],
+		projects: [
+			{
+				number: "01",
+				title: "RiSTOCK",
+				role: "Software Engineer",
+				description:
+					"Multiplatform stock management app for iOS and macOS with priority-based recommendations and CSV integration.",
+				technologies: "SwiftUI · UIKit · AppKit",
+				year: "2025",
+				imageAlt: "RiSTOCK application interface",
+			},
+			{
+				number: "02",
+				title: "COCO.CO",
+				role: "iOS Developer",
+				description:
+					"Snorkeling trip booking app with collaborative features for smarter group-based travel planning.",
+				technologies: "SwiftUI · UIKit · Swift Testing · SwiftLint",
+				year: "2025",
+				imageAlt: "COCO.CO booking interface",
+			},
+			{
+				number: "03",
+				title: "Kevin",
+				role: "macOS Developer",
+				description:
+					"Speech training app that analyzes delivery and provides immediate improvement feedback using ML.",
+				technologies: "SwiftUI · CoreML · AVFoundation · SwiftData",
+				year: "2025",
+				imageAlt: "Kevin speech analysis interface",
+			},
+			{
+				number: "04",
+				title: "Swifter",
+				role: "iOS Developer",
+				description:
+					"Jogging routine planner that intelligently schedules workouts around calendar commitments.",
+				technologies: "SwiftUI · SwiftData · EventKit",
+				year: "2025",
+				imageAlt: "Swifter workout schedule",
+			},
+		],
 	},
 	{
-		number: "02",
-		title: "COCO.CO",
-		role: "iOS Developer",
+		title: "PT. Jaya Santoso Teknologi",
+		role: "Frontend Developer",
+		dateRange: "January 2025 - July 2025",
 		description:
-			"Snorkeling trip booking application with collaborative features that drive user acquisition through smarter group-based travel planning.",
-		technologies: "Technologies: SwiftUI, UIKit, Swift Testing, SwiftLint",
-		year: "2025",
-		imageAlt: "COCO.CO snorkeling booking app showing trip selection interface",
-	},
-	{
-		number: "03",
-		title: "Kevin",
-		role: "macOS Developer",
-		description:
-			"macOS speech training application that analyzes user speech delivery and provides immediate improvement feedback using machine learning.",
-		technologies: "Technologies: SwiftUI, CoreML, AVFoundation, SwiftData",
-		year: "2025",
-		imageAlt: "Kevin speech training app showing speech analysis and feedback interface",
-	},
-	{
-		number: "04",
-		title: "Swifter",
-		role: "iOS Developer",
-		description:
-			"iOS jogging routine planner that intelligently schedules workouts around calendar commitments with EventKit integration.",
-		technologies: "Technologies: SwiftUI, SwiftData, EventKit",
-		year: "2025",
-		imageAlt: "Swifter jogging app showing calendar integration and workout schedule",
-	},
-];
-
-const frontendProjects = [
-	{
-		number: "05",
-		title: "Wedding Platform",
-		role: "Frontend Developer at PT. Jaya Santoso Teknologi",
-		description:
-			"Developed responsive wedding invitation websites with QR-based guest management system ensuring optimal performance across all devices.",
-		technologies: "Technologies: React.js, Tailwind CSS, REST APIs",
-		year: "2025",
-		imageAlt: "Wedding invitation website showing responsive design and QR code guest management",
+			"Developed responsive web applications for client projects, focusing on wedding invitation platforms with modern UI/UX and integrated guest management systems.",
+		keyProjects: ["Wedding Invitation Platform"],
+		projects: [
+			{
+				number: "05",
+				title: "Wedding Platform",
+				role: "Frontend Developer",
+				description:
+					"Responsive wedding invitation websites with QR-based guest management ensuring optimal cross-device performance.",
+				technologies: "React.js · Tailwind CSS · REST APIs",
+				year: "2025",
+				imageAlt: "Wedding invitation website",
+			},
+		],
 	},
 ];
 
@@ -75,20 +92,7 @@ export default function Home() {
 				<Header />
 
 				<main id="main-content">
-					<ProjectsSection
-						title="Apple Developer Academy"
-						meta="March 2025 - December 2025 | 4 Projects"
-						projects={academyProjects}
-						headingId="academy-heading"
-					/>
-
-					<ProjectsSection
-						title="Frontend Development"
-						meta="January 2025 - July 2025 | Client Work"
-						projects={frontendProjects}
-						headingId="frontend-heading"
-					/>
-
+					<ExperienceSection experiences={experiences} />
 					<ContactSection />
 				</main>
 
