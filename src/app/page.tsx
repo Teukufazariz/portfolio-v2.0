@@ -1,65 +1,99 @@
-import Image from "next/image";
+import Header from "@/components/Header";
+import ThemeToggle from "@/components/ThemeToggle";
+import ProjectsSection from "@/components/ProjectsSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+
+const academyProjects = [
+	{
+		number: "01",
+		title: "RiSTOCK",
+		role: "Software Engineer",
+		description:
+			"Multiplatform stock management application for iOS and macOS that prevents inventory problems through priority-based recommendations and CSV integration.",
+		technologies: "Technologies: SwiftUI, UIKit, AppKit",
+		year: "2025",
+		imageAlt: "RiSTOCK application interface showing stock management dashboard",
+	},
+	{
+		number: "02",
+		title: "COCO.CO",
+		role: "iOS Developer",
+		description:
+			"Snorkeling trip booking application with collaborative features that drive user acquisition through smarter group-based travel planning.",
+		technologies: "Technologies: SwiftUI, UIKit, Swift Testing, SwiftLint",
+		year: "2025",
+		imageAlt: "COCO.CO snorkeling booking app showing trip selection interface",
+	},
+	{
+		number: "03",
+		title: "Kevin",
+		role: "macOS Developer",
+		description:
+			"macOS speech training application that analyzes user speech delivery and provides immediate improvement feedback using machine learning.",
+		technologies: "Technologies: SwiftUI, CoreML, AVFoundation, SwiftData",
+		year: "2025",
+		imageAlt: "Kevin speech training app showing speech analysis and feedback interface",
+	},
+	{
+		number: "04",
+		title: "Swifter",
+		role: "iOS Developer",
+		description:
+			"iOS jogging routine planner that intelligently schedules workouts around calendar commitments with EventKit integration.",
+		technologies: "Technologies: SwiftUI, SwiftData, EventKit",
+		year: "2025",
+		imageAlt: "Swifter jogging app showing calendar integration and workout schedule",
+	},
+];
+
+const frontendProjects = [
+	{
+		number: "05",
+		title: "Wedding Platform",
+		role: "Frontend Developer at PT. Jaya Santoso Teknologi",
+		description:
+			"Developed responsive wedding invitation websites with QR-based guest management system ensuring optimal performance across all devices.",
+		technologies: "Technologies: React.js, Tailwind CSS, REST APIs",
+		year: "2025",
+		imageAlt: "Wedding invitation website showing responsive design and QR code guest management",
+	},
+];
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+	return (
+		<>
+			<ThemeToggle />
+			<a
+				href="#main-content"
+				className="absolute top-[-40px] left-0 bg-black text-white px-4 py-2 no-underline z-50 focus:top-0"
+			>
+				Skip to main content
+			</a>
+
+			<div className="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-16">
+				<Header />
+
+				<main id="main-content">
+					<ProjectsSection
+						title="Apple Developer Academy"
+						meta="March 2025 - December 2025 | 4 Projects"
+						projects={academyProjects}
+						headingId="academy-heading"
+					/>
+
+					<ProjectsSection
+						title="Frontend Development"
+						meta="January 2025 - July 2025 | Client Work"
+						projects={frontendProjects}
+						headingId="frontend-heading"
+					/>
+
+					<ContactSection />
+				</main>
+
+				<Footer />
+			</div>
+		</>
+	);
 }
