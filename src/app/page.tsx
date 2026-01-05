@@ -11,7 +11,7 @@ const experiences = [
 		dateRange: "March 2025 - December 2025",
 		description:
 			"Intensive 10-month program focused on multiplatform iOS and macOS development. Built 4 production-ready applications using Swift, SwiftUI, and UIKit with emphasis on clean architecture and user experience.",
-		keyProjects: ["RiSTOCK", "COCO.CO", "Kevin", "Swifter"],
+		keyProjects: ["RiSTOCK", "Kevin"],
 		projects: [
 			{
 				number: "01",
@@ -22,19 +22,10 @@ const experiences = [
 				technologies: "SwiftUI · UIKit · AppKit",
 				year: "2025",
 				imageAlt: "RiSTOCK application interface",
+				featured: true, // ⭐ Featured
 			},
 			{
 				number: "02",
-				title: "COCO.CO",
-				role: "iOS Developer",
-				description:
-					"Snorkeling trip booking app with collaborative features for smarter group-based travel planning.",
-				technologies: "SwiftUI · UIKit · Swift Testing · SwiftLint",
-				year: "2025",
-				imageAlt: "COCO.CO booking interface",
-			},
-			{
-				number: "03",
 				title: "Kevin",
 				role: "macOS Developer",
 				description:
@@ -42,6 +33,17 @@ const experiences = [
 				technologies: "SwiftUI · CoreML · AVFoundation · SwiftData",
 				year: "2025",
 				imageAlt: "Kevin speech analysis interface",
+				featured: true, // ⭐ Featured
+			},
+			{
+				number: "03",
+				title: "COCO.CO",
+				role: "iOS Developer",
+				description:
+					"Snorkeling trip booking app with collaborative features for smarter group-based travel planning.",
+				technologies: "SwiftUI · UIKit · Swift Testing · SwiftLint",
+				year: "2025",
+				imageAlt: "COCO.CO booking interface",
 			},
 			{
 				number: "04",
@@ -61,7 +63,7 @@ const experiences = [
 		dateRange: "January 2025 - July 2025",
 		description:
 			"Developed responsive web applications for client projects, focusing on wedding invitation platforms with modern UI/UX and integrated guest management systems.",
-		keyProjects: ["Wedding Invitation Platform"],
+		keyProjects: ["Wedding Platform"],
 		projects: [
 			{
 				number: "05",
