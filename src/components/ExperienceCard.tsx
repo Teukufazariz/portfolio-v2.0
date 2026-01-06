@@ -13,13 +13,7 @@ export default function ExperienceCard({
   logoPlaceholder = "💼",
 }: ExperienceCardProps) {
   return (
-    <article className="relative py-8 transition-all duration-300 group
-      before:content-[''] before:absolute before:left-[-49px] before:top-8 
-      before:w-4 before:h-4 before:bg-white dark:before:bg-black 
-      before:border-[3px] before:border-black dark:before:border-white 
-      before:rounded-full before:transition-all before:duration-300 
-      before:z-10 before:hidden md:before:block
-      hover:before:bg-black dark:hover:before:bg-white hover:before:scale-125">
+    <article className="relative py-8 transition-all duration-300 group">
       
       {/* Logo */}
       <div className="md:absolute md:-left-20 md:top-6 w-14 h-14 md:w-16 md:h-16 

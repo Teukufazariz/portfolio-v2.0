@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ExperienceCard from "./ExperienceCard";
 import FeaturedProjectCard from "./FeaturedProjectCard";
+import ProjectCard from "./ProjectCard";
 import { Experience } from "@/data/portfolio";
 
 interface ExperienceSectionProps {
@@ -73,73 +74,7 @@ export default function ExperienceSection({
             <div className="overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {otherProjects.map((project) => (
-                  <Link
-                    key={project.number}
-                    href={`/projects/${project.slug}`}
-                    className="block group"
-                  >
-                    <article className="bg-gray-50 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[4px_4px_0_0_#000] dark:hover:shadow-[4px_4px_0_0_#fff] hover:-translate-x-0.5 hover:-translate-y-0.5 h-full">
-                      {/* Smaller Project Image */}
-                      <div className="w-full h-48 bg-gray-200 dark:bg-neutral-800 border-b border-gray-300 dark:border-neutral-700 flex items-center justify-center overflow-hidden">
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-neutral-800 dark:to-neutral-700 text-gray-400 dark:text-gray-500 font-bold text-3xl transition-transform duration-300 group-hover:scale-105">
-                          {project.title.charAt(0)}
-                        </div>
-                      </div>
-
-                      {/* Project Content */}
-                      <div className="p-5 flex flex-col flex-grow">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-widest">
-                            {project.number}
-                          </span>
-                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-                            {project.year}
-                          </span>
-                        </div>
-
-                        <h4 className="text-xl font-bold mb-1 leading-tight group-hover:underline underline-offset-4">
-                          {project.title}
-                        </h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
-                          {project.role}
-                        </p>
-
-                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 flex-grow">
-                          {project.description}
-                        </p>
-
-                        <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-4">
-                          {project.technologies.join(' · ')}
-                        </p>
-
-                        {/* Action Links */}
-                        <div className="flex gap-2 mt-auto">
-                          {project.githubUrl && (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="px-3 py-1.5 text-xs font-semibold border border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all duration-200"
-                            >
-                              GitHub
-                            </a>
-                          )}
-                          {project.demoUrl && (
-                            <a
-                              href={project.demoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="px-3 py-1.5 text-xs font-semibold bg-black dark:bg-white text-white dark:text-black border border-black dark:border-white hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white transition-all duration-200"
-                            >
-                              View
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </article>
-                  </Link>
+                  <ProjectCard key={project.number} {...project} />
                 ))}
               </div>
             </div>
@@ -149,7 +84,12 @@ export default function ExperienceSection({
 
       {/* Experience Section */}
       <div className="mt-16 pt-16 border-t-2 border-black dark:border-white">
-        <h3 className="text-3xl font-bold mb-12">Experience</h3>
+        <h3 className="text-4xl md:text-5xl font-bold mb-3">Experience</h3>
+
+        <p className="text-base text-gray-500 dark:text-gray-400 mb-4">
+          Highlighting my best work from Apple Developer Academy and professional
+          experience
+        </p>
         
         <div className="relative md:pl-20 flex flex-col gap-0">
           {/* Timeline vertical line */}
@@ -160,11 +100,6 @@ export default function ExperienceSection({
           
           {experiences.map((experience, index) => (
             <div key={index} className="relative">
-              {/* Timeline dot/connector */}
-              <div 
-                className="hidden md:flex absolute left-[-52px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white border-4 border-white dark:border-neutral-900 z-10"
-                aria-hidden="true"
-              />
               <ExperienceCard {...experience} />
             </div>
           ))}

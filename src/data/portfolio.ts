@@ -1,18 +1,19 @@
 export interface Project {
   number: string;
-  title: string;
   slug: string;
+  title: string;
   role: string;
-  description: string; // This is the short description
-  longDescription?: string; // This is the detailed description
+  description: string;
+  longDescription?: string;
   technologies: string[];
   year: string;
   imageAlt: string;
-  githubUrl?: string;
-  demoUrl?: string;
-  featured?: boolean;
   context?: string;
   dateRange?: string;
+  githubUrl?: string;
+  demoUrl?: string;
+  appStoreUrl?: string; 
+  featured?: boolean;
 }
 
 export interface Experience {
@@ -57,6 +58,8 @@ Key features include location-based dessert shop discovery, AR menu previews tha
         technologies: ["SwiftUI", "ARKit", "MapKit", "CoreLocation"],
         year: "2025",
         imageAlt: "RiSTOCK app interface",
+        githubUrl: "https://github.com/teukufazariz/ristock",
+        appStoreUrl: "https://apps.apple.com/app/ristock/id123456789",
         featured: true,
       },
 
@@ -77,6 +80,8 @@ Key features include destination discovery, group trip creation, shared itinerar
         technologies: ["SwiftUI", "UIKit", "Swift Testing", "SwiftLint"],
         year: "2025",
         imageAlt: "COCO.CO booking interface",
+        githubUrl: "https://github.com/teukufazariz/coco-co",
+        appStoreUrl: "https://apps.apple.com/app/coco-co/id123456790",
         featured: true,
       },
       {
@@ -85,7 +90,7 @@ Key features include destination discovery, group trip creation, shared itinerar
         slug: "percatalk",
         role: "iOS Developer",
         context: "Apple Developer Academy",
-        dateRange: "May 2025 - June2025",
+        dateRange: "May 2025 - June 2025",
         description:
           "AI-powered speech analysis tool helping users improve public speaking skills.",
         longDescription: `PercaTalk is an AI-powered speech analysis tool designed to help users improve their public speaking skills through real-time feedback and personalized coaching.
@@ -96,6 +101,8 @@ Features include speech-to-text transcription, filler word detection, pacing ana
         technologies: ["SwiftUI", "CoreML", "AVFoundation", "SwiftData"],
         year: "2025",
         imageAlt: "PercaTalk speech analysis interface",
+        githubUrl: "https://github.com/teukufazariz/percatalk",
+        appStoreUrl: "https://apps.apple.com/app/percatalk/id123456791",
       },
       {
         number: "04",
@@ -114,6 +121,8 @@ Features include smart scheduling, calendar integration, workout tracking, and p
         technologies: ["SwiftUI", "SwiftData", "EventKit"],
         year: "2025",
         imageAlt: "Swifter workout schedule",
+        githubUrl: "https://github.com/teukufazariz/swifter",
+        appStoreUrl: "https://apps.apple.com/app/swifter/id123456792",
       },
     ],
   },
@@ -148,6 +157,8 @@ Key achievements include developing 10+ responsive wedding websites, implementin
         technologies: ["React.js", "Tailwind CSS", "REST APIs"],
         year: "2025",
         imageAlt: "Wedding invitation website",
+        githubUrl: "https://github.com/teukufazariz/wedding-platform",
+        demoUrl: "https://wedding-demo.example.com",
       },
     ],
   },
