@@ -33,7 +33,7 @@ export default function ExperienceCard({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="border-2 border-black dark:border-white bg-white dark:bg-neutral-950">
+    <div className="border-2 border-black dark:border-white bg-white dark:bg-neutral-900">
       {/* Card Header - Always Visible */}
       <div className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
@@ -52,8 +52,8 @@ export default function ExperienceCard({
           {description}
         </p>
 
-        {/* Key Projects Preview */}
-        <div className="mb-6">
+      
+        {/* <div className="mb-6">
           <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
             Key Projects
           </p>
@@ -67,23 +67,23 @@ export default function ExperienceCard({
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Expand/Collapse Button */}
-        <button
+        {/* <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="flex items-center gap-2 text-sm font-semibold hover:underline underline-offset-4 transition-all duration-200"
           aria-expanded={isExpanded}
         >
           {isExpanded ? "Hide project details" : "View project details"}
-          <span
+          <span 
             className={`transition-transform duration-200 ${
               isExpanded ? "rotate-180" : ""
             }`}
           >
             ↓
           </span>
-        </button>
+        </button> */}
       </div>
 
       {/* Expandable Projects Section */}

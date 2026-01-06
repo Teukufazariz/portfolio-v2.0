@@ -24,7 +24,7 @@ export default function FeaturedProjectCard({
   return (
     <article className="bg-gray-50 dark:bg-neutral-900 border-2 border-black dark:border-white flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[8px_8px_0_0_#000] dark:hover:shadow-[8px_8px_0_0_#fff] hover:-translate-x-1 hover:-translate-y-1">
       {/* Larger Featured Image */}
-      <div className="w-full h-80 md:h-96 bg-gray-200 dark:bg-neutral-800 border-b-2 border-black dark:border-white flex items-center justify-center overflow-hidden">
+      <div className="w-full h-64 md:h-72 bg-gray-200 dark:bg-neutral-800 border-b-2 border-black dark:border-white flex items-center justify-center overflow-hidden">
         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-neutral-800 dark:to-neutral-700 text-gray-400 dark:text-gray-500 font-bold text-5xl">
           {title.charAt(0)}
         </div>

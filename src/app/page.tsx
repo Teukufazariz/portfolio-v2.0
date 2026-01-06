@@ -11,7 +11,7 @@ const experiences = [
 		dateRange: "March 2025 - December 2025",
 		description:
 			"Intensive 10-month program focused on multiplatform iOS and macOS development. Built 4 production-ready applications using Swift, SwiftUI, and UIKit with emphasis on clean architecture and user experience.",
-		keyProjects: ["RiSTOCK", "Kevin"],
+		keyProjects: ["RiSTOCK", "PercaTalk"],
 		projects: [
 			{
 				number: "01",
@@ -26,7 +26,7 @@ const experiences = [
 			},
 			{
 				number: "02",
-				title: "Kevin",
+				title: "PercaTalk",
 				role: "macOS Developer",
 				description:
 					"Speech training app that analyzes delivery and provides immediate improvement feedback using ML.",
