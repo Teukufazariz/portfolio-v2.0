@@ -1,14 +1,6 @@
-interface ProjectCardProps {
-  number: string;
-  title: string;
-  role: string;
-  description: string;
-  technologies: string;
-  year: string;
-  imageAlt: string;
-  githubUrl?: string;
-  demoUrl?: string;
-}
+import { Project } from "@/data/portfolio";
+
+interface ProjectCardProps extends Omit<Project, 'slug' | 'featured'> {}
 
 export default function ProjectCard({
   number,
@@ -52,7 +44,7 @@ export default function ProjectCard({
 
         {/* Tech Stack */}
         <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-4">
-          {technologies}
+          {technologies.join(' · ')}
         </p>
 
         {/* Action Links */}

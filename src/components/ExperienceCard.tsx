@@ -1,13 +1,8 @@
 "use client";
 
-interface ExperienceCardProps {
-  title: string;
-  role: string;
-  dateRange: string;
-  description: string;
-  achievements?: string[];
-  logoPlaceholder?: string;
-}
+import { Experience } from "@/data/portfolio";
+
+interface ExperienceCardProps extends Omit<Experience, 'projects'> {}
 
 export default function ExperienceCard({
   title,

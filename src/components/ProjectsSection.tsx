@@ -1,14 +1,5 @@
 import ProjectCard from "./ProjectCard";
-
-interface Project {
-  number: string;
-  title: string;
-  role: string;
-  description: string;
-  technologies: string;
-  year: string;
-  imageAlt: string;
-}
+import { Project } from "@/data/portfolio";
 
 interface ProjectsSectionProps {
   title: string;
