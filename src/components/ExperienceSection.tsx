@@ -167,12 +167,22 @@ export default function ExperienceSection({
       <div className="mt-16 pt-16 border-t-2 border-black dark:border-white">
         <h3 className="text-3xl font-bold mb-12">Experience</h3>
         
-        <div className="relative md:pl-20 flex flex-col gap-0
-          before:content-[''] before:absolute before:left-[31px] before:top-8 
-          before:bottom-8 before:w-0.5 before:bg-black dark:before:bg-white
-          before:hidden md:before:block">
+        <div className="relative md:pl-20 flex flex-col gap-0">
+          {/* Timeline vertical line */}
+          <div 
+            className="hidden md:block absolute left-[31px] top-8 bottom-8 w-0.5 bg-black dark:bg-white"
+            aria-hidden="true"
+          />
+          
           {experiences.map((experience, index) => (
-            <ExperienceCard key={index} {...experience} />
+            <div key={index} className="relative">
+              {/* Timeline dot/connector */}
+              <div 
+                className="hidden md:flex absolute left-[-52px] top-6 w-4 h-4 rounded-full bg-black dark:bg-white border-4 border-white dark:border-neutral-900 z-10"
+                aria-hidden="true"
+              />
+              <ExperienceCard {...experience} />
+            </div>
           ))}
         </div>
       </div>
