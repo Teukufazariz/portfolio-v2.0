@@ -9,9 +9,15 @@ const experiences = [
 		title: "Apple Developer Academy",
 		role: "iOS Developer Mentee",
 		dateRange: "March 2025 - December 2025",
+		logoPlaceholder: "🍎",
 		description:
 			"Intensive 10-month program focused on multiplatform iOS and macOS development. Built 4 production-ready applications using Swift, SwiftUI, and UIKit with emphasis on clean architecture and user experience.",
-		keyProjects: ["RiSTOCK", "PercaTalk"],
+		achievements: [
+			"Built <span class='font-bold'>RiSTOCK</span>, <span class='font-bold'>COCO.CO</span>, <span class='font-bold'>PercaTalk</span>, and <span class='font-bold'>Swifter</span> using Swift, SwiftUI, and UIKit",
+			"Implemented CoreML-powered speech analysis with real-time audio processing using AVFoundation and SwiftData",
+			"Engineered collaborative features improving user acquisition through group-based planning with SwiftUI components",
+			"Integrated EventKit and SwiftData to automatically schedule sessions around calendar commitments",
+		],
 		projects: [
 			{
 				number: "01",
@@ -61,9 +67,15 @@ const experiences = [
 		title: "PT. Jaya Santoso Teknologi",
 		role: "Frontend Developer",
 		dateRange: "January 2025 - July 2025",
+		logoPlaceholder: "💍",
 		description:
 			"Developed responsive web applications for client projects, focusing on wedding invitation platforms with modern UI/UX and integrated guest management systems.",
-		keyProjects: ["Wedding Platform"],
+		achievements: [
+			"Developed <span class='font-bold'>10+ responsive wedding websites</span> using React.js, Tailwind CSS, and REST APIs",
+			"Built QR code-based guest management system enabling real-time attendance tracking",
+			"Collaborated with design and backend teams ensuring seamless user experience across all devices",
+			"Optimized web performance achieving 90+ Lighthouse scores through code splitting and lazy loading",
+		],
 		projects: [
 			{
 				number: "05",

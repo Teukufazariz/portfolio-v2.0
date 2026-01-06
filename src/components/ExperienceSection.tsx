@@ -22,7 +22,8 @@ interface Experience {
   role: string;
   dateRange: string;
   description: string;
-  keyProjects: string[];
+  achievements?: string[];
+  logoPlaceholder?: string;
   projects: Project[];
 }
 
@@ -162,10 +163,14 @@ export default function ExperienceSection({
         </div>
       )}
 
-      {/* Full Experience Cards (Optional - keep if you want to show company info) */}
+      {/* Experience Section */}
       <div className="mt-16 pt-16 border-t-2 border-black dark:border-white">
-        <h3 className="text-3xl font-bold mb-8">Experience</h3>
-        <div className="flex flex-col gap-8">
+        <h3 className="text-3xl font-bold mb-12">Experience</h3>
+        
+        <div className="relative md:pl-20 flex flex-col gap-0
+          before:content-[''] before:absolute before:left-[31px] before:top-8 
+          before:bottom-8 before:w-0.5 before:bg-black dark:before:bg-white
+          before:hidden md:before:block">
           {experiences.map((experience, index) => (
             <ExperienceCard key={index} {...experience} />
           ))}

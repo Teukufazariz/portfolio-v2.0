@@ -1,25 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import ProjectCard from "./ProjectCard";
-
-interface Project {
-  number: string;
-  title: string;
-  role: string;
-  description: string;
-  technologies: string;
-  year: string;
-  imageAlt: string;
-}
-
 interface ExperienceCardProps {
   title: string;
   role: string;
   dateRange: string;
   description: string;
-  keyProjects: string[];
-  projects: Project[];
+  achievements?: string[];
+  logoPlaceholder?: string;
 }
 
 export default function ExperienceCard({
@@ -27,83 +14,59 @@ export default function ExperienceCard({
   role,
   dateRange,
   description,
-  keyProjects,
-  projects,
+  achievements = [],
+  logoPlaceholder = "💼",
 }: ExperienceCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   return (
-    <div className="border-2 border-black dark:border-white bg-white dark:bg-neutral-900">
-      {/* Card Header - Always Visible */}
-      <div className="p-6 md:p-8">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
-          <div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-1">{title}</h3>
-            <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
-              {role}
-            </p>
-          </div>
-          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">
-            {dateRange}
-          </span>
-        </div>
-
-        <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-          {description}
-        </p>
-
+    <article className="relative py-8 transition-all duration-300 group
+      before:content-[''] before:absolute before:left-[-49px] before:top-8 
+      before:w-4 before:h-4 before:bg-white dark:before:bg-black 
+      before:border-[3px] before:border-black dark:before:border-white 
+      before:rounded-full before:transition-all before:duration-300 
+      before:z-10 before:hidden md:before:block
+      hover:before:bg-black dark:hover:before:bg-white hover:before:scale-125">
       
-        {/* <div className="mb-6">
-          <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-            Key Projects
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {keyProjects.map((project, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-gray-100 dark:bg-neutral-800 text-sm font-medium border border-gray-300 dark:border-neutral-700"
-              >
-                {project}
-              </span>
-            ))}
-          </div>
-        </div> */}
-
-        {/* Expand/Collapse Button */}
-        {/* <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-2 text-sm font-semibold hover:underline underline-offset-4 transition-all duration-200"
-          aria-expanded={isExpanded}
-        >
-          {isExpanded ? "Hide project details" : "View project details"}
-          <span 
-            className={`transition-transform duration-200 ${
-              isExpanded ? "rotate-180" : ""
-            }`}
-          >
-            ↓
-          </span>
-        </button> */}
+      {/* Logo */}
+      <div className="md:absolute md:-left-20 md:top-6 w-14 h-14 md:w-16 md:h-16 
+        bg-gray-100 dark:bg-neutral-800 mb-6 md:mb-0
+        border-2 border-black dark:border-white rounded-full flex items-center 
+        justify-center overflow-hidden transition-all duration-300 group-hover:scale-105">
+        <span className="text-xl md:text-2xl font-bold text-gray-600 dark:text-gray-400">
+          {logoPlaceholder}
+        </span>
       </div>
 
-      {/* Expandable Projects Section */}
-      <div
-        className={`grid transition-all duration-200 ease-in-out ${
-          isExpanded
-            ? "grid-rows-[1fr] opacity-100"
-            : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div className="border-t-2 border-black dark:border-white p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {projects.map((project) => (
-                <ProjectCard key={project.number} {...project} />
-              ))}
-            </div>
-          </div>
+      <div className="flex flex-col md:flex-row justify-between items-start mb-3 gap-2 md:gap-4">
+        <div>
+          <h3 className="text-2xl md:text-3xl font-bold mb-1 leading-tight text-black dark:text-white">
+            {title}
+          </h3>
+          <p className="text-base text-gray-600 dark:text-gray-400 font-semibold mb-2">
+            {role}
+          </p>
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-400 font-semibold whitespace-nowrap md:text-right">
+          {dateRange}
         </div>
       </div>
-    </div>
+
+      <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400 mb-4">
+        {description}
+      </p>
+
+      {achievements.length > 0 && (
+        <ul className="list-none pl-0 m-0">
+          {achievements.map((achievement, index) => (
+            <li 
+              key={index}
+              className="text-base leading-relaxed text-gray-600 dark:text-gray-400 mb-3 pl-5 relative 
+                before:content-['•'] before:absolute before:left-0 before:text-black dark:before:text-white 
+                before:font-bold before:text-lg"
+              dangerouslySetInnerHTML={{ __html: achievement }}
+            />
+          ))}
+        </ul>
+      )}
+    </article>
   );
 }
