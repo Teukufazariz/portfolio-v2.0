@@ -33,7 +33,7 @@ export const experiences: Experience[] = [
   {
     title: "Apple Developer Academy",
     role: "iOS Developer",
-    dateRange: "February 2025 - December 2025",
+    dateRange: "March 2025 - December 2025",
     logoPlaceholder: "🍎",
     description:
       "Intensive 10-month program focused on iOS development, collaborative product design, and professional skills. Working in multidisciplinary teams to ship real-world apps using Apple's latest frameworks and Human Interface Guidelines.",

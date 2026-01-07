@@ -39,12 +39,12 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Project Meta */}
       <div className="border-t-2 border-b-2 border-[var(--border-color)] py-8 mb-10">
-        <div className="grid grid-cols-3 gap-10">
+        <div className="grid grid-cols-3 gap-4 md:gap-10">
           <div className="flex flex-col gap-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
               Role
             </span>
-            <span className="text-lg font-semibold leading-snug">
+            <span className="text-sm md:text-lg font-semibold leading-snug">
               {project.role}
             </span>
           </div>
@@ -52,7 +52,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
               Context
             </span>
-            <span className="text-lg font-semibold leading-snug">
+            <span className="text-sm md:text-lg font-semibold leading-snug">
               {project.context || "Personal Project"}
             </span>
           </div>
@@ -60,7 +60,10 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
               Timeframe
             </span>
-            <span className="text-lg font-semibold leading-snug">
+            <span className="text-sm md:text-lg font-semibold leading-snug md:hidden">
+              {project.year}
+            </span>
+            <span className="text-sm md:text-lg font-semibold leading-snug hidden md:block">
               {project.dateRange || project.year}
             </span>
           </div>
@@ -112,7 +115,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
       )}
 
       {/* Detailed Description */}
-      <section className="mb-8 max-w-prose">
+      <section className="mb-8">
         <h2 className="text-[32px] font-bold mb-6">
           About the Project
         </h2>
@@ -125,7 +128,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Problem Section - Optional */}
       {project.problem && (
-        <section className="mb-8 max-w-prose">
+        <section className="mb-8">
           <h2 className="text-[32px] font-bold mb-6">
             The Problem
           </h2>
@@ -139,7 +142,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Solution Section - Optional */}
       {project.solution && (
-        <section className="mb-16 max-w-prose">
+        <section className="mb-16">
           <h2 className="text-[32px] font-bold mb-6">
             The Solution
           </h2>
@@ -153,15 +156,15 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Key Contributions Section - Optional */}
       {project.keyContributions && project.keyContributions.length > 0 && (
-        <section className="mb-15 max-w-prose">
+        <section className="mb-15">
           <h2 className="text-[32px] font-bold mb-6">
             Key Contributions
           </h2>
-          <ul className="list-none pl-0 m-0">
+          <ul className="list-none">
             {project.keyContributions.map((contribution, index) => (
               <li 
                 key={index}
-                className="text-lg leading-relaxed text-[var(--text-secondary)] mb-4 pl-6 relative 
+                className="text-lg leading-relaxed text-[var(--text-secondary)] mb-4 pl-8 relative 
                   before:content-['→'] before:absolute before:left-0 before:text-[var(--text-primary)] 
                   before:font-bold"
               >
