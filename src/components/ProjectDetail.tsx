@@ -28,24 +28,16 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         </p>
       </header>
 
-      {/* Hero Image - MOVED UP */}
+      {/* Hero Image */}
       <div className="mb-15">
         <div className="w-full aspect-video border-2 border-[var(--border-color)] overflow-hidden bg-[var(--bg-secondary)]">
-          {/* Replace this placeholder with actual image */}
           <div className="w-full h-full flex items-center justify-center text-[120px] font-bold text-[var(--text-secondary)] bg-gradient-to-br from-[var(--bg-secondary)] to-gray-300">
             {project.title.charAt(0)}
           </div>
-          {/* When you have real images, use this instead:
-          <img 
-            src={project.imageUrl} 
-            alt={`${project.title} application interface`}
-            className="w-full h-full object-cover"
-          />
-          */}
         </div>
       </div>
 
-      {/* Project Meta - NO BOX, CLEAN WITH DIVIDERS */}
+      {/* Project Meta */}
       <div className="border-t-2 border-b-2 border-[var(--border-color)] py-8 mb-10">
         <div className="grid grid-cols-3 gap-10">
           <div className="flex flex-col gap-2">
@@ -75,7 +67,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         </div>
       </div>
 
-      {/* Call to Action Links - IMPROVED HIERARCHY */}
+      {/* Call to Action Links */}
       {hasLinks && (
         <div className="mb-20">
           <div className="flex gap-4 flex-wrap">
@@ -120,7 +112,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
       )}
 
       {/* Detailed Description */}
-      <section className="mb-15">
+      <section className="mb-8 max-w-prose">
         <h2 className="text-[32px] font-bold mb-6">
           About the Project
         </h2>
@@ -128,9 +120,57 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           <p className="mb-5 last:mb-0">
             {project.longDescription || project.description}
           </p>
-          {/* Add more paragraphs as needed */}
         </div>
       </section>
+
+      {/* Problem Section - Optional */}
+      {project.problem && (
+        <section className="mb-8 max-w-prose">
+          <h2 className="text-[32px] font-bold mb-6">
+            The Problem
+          </h2>
+          <div className="text-lg leading-relaxed text-[var(--text-secondary)]">
+            <p className="mb-5 last:mb-0">
+              {project.problem}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Solution Section - Optional */}
+      {project.solution && (
+        <section className="mb-16 max-w-prose">
+          <h2 className="text-[32px] font-bold mb-6">
+            The Solution
+          </h2>
+          <div className="text-lg leading-relaxed text-[var(--text-secondary)]">
+            <p className="mb-5 last:mb-0">
+              {project.solution}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Key Contributions Section - Optional */}
+      {project.keyContributions && project.keyContributions.length > 0 && (
+        <section className="mb-15 max-w-prose">
+          <h2 className="text-[32px] font-bold mb-6">
+            Key Contributions
+          </h2>
+          <ul className="list-none pl-0 m-0">
+            {project.keyContributions.map((contribution, index) => (
+              <li 
+                key={index}
+                className="text-lg leading-relaxed text-[var(--text-secondary)] mb-4 pl-6 relative 
+                  before:content-['→'] before:absolute before:left-0 before:text-[var(--text-primary)] 
+                  before:font-bold"
+              >
+                {contribution}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Technologies */}
       <section className="mb-15">

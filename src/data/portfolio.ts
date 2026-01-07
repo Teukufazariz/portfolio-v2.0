@@ -5,6 +5,9 @@ export interface Project {
   role: string;
   description: string;
   longDescription?: string;
+  problem?: string;
+  solution?: string;
+  keyContributions?: string[];
   technologies: string[];
   year: string;
   imageAlt: string;
@@ -55,6 +58,14 @@ export const experiences: Experience[] = [
 The app won the Nano 1 Challenge 2025 at Apple Developer Academy, recognized for its innovative use of AR technology and intuitive user experience.
 
 Key features include location-based dessert shop discovery, AR menu previews that let users see 3D models of desserts, and personalized recommendations based on user preferences.`,
+        problem: "Customers often struggle to visualize dessert portions and presentations before ordering, leading to unmet expectations and food waste. Traditional menus with static images don't convey the actual size or appearance of dishes.",
+        solution: "We built an AR-powered preview system that lets users see life-sized 3D models of desserts on their table before ordering. Combined with location-based discovery, users can find nearby shops and make informed decisions.",
+        keyContributions: [
+        "Architected the AR preview system using ARKit, enabling realistic 3D dessert visualization",
+        "Implemented location-based search with MapKit and CoreLocation for nearby shop discovery",
+        "Led the UI/UX design following Apple Human Interface Guidelines",
+        "Optimized 3D model loading for smooth performance on older devices",
+        ],
         technologies: ["SwiftUI", "ARKit", "MapKit", "CoreLocation"],
         year: "2025",
         imageAlt: "RiSTOCK app interface",
