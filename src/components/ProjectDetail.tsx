@@ -3,9 +3,11 @@ import { Project } from "@/data/portfolio";
 
 interface ProjectDetailProps {
   project: Project;
+  previousProject?: Project;
+  nextProject?: Project;
 }
 
-export default function ProjectDetail({ project }: ProjectDetailProps) {
+export default function ProjectDetail({ project, previousProject, nextProject }: ProjectDetailProps) {
   const hasLinks = project.githubUrl || project.demoUrl || project.appStoreUrl;
 
   return (
@@ -60,6 +62,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
               Timeframe
             </span>
+            {/* Show year only on mobile, full date range on desktop */}
             <span className="text-sm md:text-lg font-semibold leading-snug md:hidden">
               {project.year}
             </span>
@@ -142,7 +145,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Solution Section - Optional */}
       {project.solution && (
-        <section className="mb-16">
+        <section className="mb-15">
           <h2 className="text-[32px] font-bold mb-6">
             The Solution
           </h2>
@@ -191,6 +194,37 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           ))}
         </div>
       </section>
+
+      {/* Simplified Navigation to Previous/Next Projects */}
+      {(previousProject || nextProject) && (
+        <nav className="mt-20 pt-10 border-t-2 border-[var(--border-color)]">
+          <div className="flex justify-between items-center">
+            {/* Previous Project */}
+            {previousProject ? (
+              <Link
+                href={`/projects/${previousProject.slug}`}
+                className="group inline-flex items-center gap-3 text-lg font-semibold transition-all duration-200 hover:text-[var(--accent-color)]"
+              >
+                <span className="text-2xl group-hover:-translate-x-1 transition-transform duration-200">←</span>
+                <span>{previousProject.title}</span>
+              </Link>
+            ) : (
+              <div /> // Empty div to maintain layout
+            )}
+
+            {/* Next Project */}
+            {nextProject && (
+              <Link
+                href={`/projects/${nextProject.slug}`}
+                className="group inline-flex items-center gap-3 text-lg font-semibold transition-all duration-200 hover:text-[var(--accent-color)]"
+              >
+                <span>{nextProject.title}</span>
+                <span className="text-2xl group-hover:translate-x-1 transition-transform duration-200">→</span>
+              </Link>
+            )}
+          </div>
+        </nav>
+      )}
     </article>
   );
 }

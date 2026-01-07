@@ -11,6 +11,18 @@ function getProject(slug: string) {
   return null;
 }
 
+function getAdjacentProjects(slug: string) {
+  const allProjects = experiences.flatMap((exp) => exp.projects);
+  const currentIndex = allProjects.findIndex((p) => p.slug === slug);
+
+  if (currentIndex === -1) return { previous: null, next: null };
+
+  const previous = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+  const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+
+  return { previous, next };
+}
+
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -41,10 +53,11 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = getProject(slug);
+  const { previous, next } = getAdjacentProjects(slug);
 
   if (!project) {
     notFound();
   }
 
-  return <ProjectDetail project={project} />;
+  return <ProjectDetail project={project} previousProject={previous || undefined} nextProject={next || undefined} />;
 }
