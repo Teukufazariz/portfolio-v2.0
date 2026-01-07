@@ -27,7 +27,7 @@ export default function ExperienceSection({
       <div className="mb-10 pb-5 ">
         <h2
           id="experience-heading"
-          className="text-4xl md:text-5xl font-bold leading-tight mb-3"
+          className="text-3xl md:text-5xl font-bold leading-tight mb-3"
         >
           Selected Projects
         </h2>
@@ -84,7 +84,7 @@ export default function ExperienceSection({
 
       {/* Experience Section */}
       <div className="mt-16 pt-16 border-t-2 border-black dark:border-white">
-        <h3 className="text-4xl md:text-5xl font-bold mb-3">Experience</h3>
+        <h3 className="text-3xl md:text-5xl font-bold mb-3">Experience</h3>
 
         <p className="text-base text-gray-500 dark:text-gray-400 mb-4">
           Highlighting my best work from Apple Developer Academy and professional

@@ -10,6 +10,7 @@ export interface Project {
   keyContributions?: string[];
   technologies: string[];
   year: string;
+  image?: string;
   imageAlt: string;
   context?: string;
   dateRange?: string;
@@ -51,6 +52,7 @@ export const experiences: Experience[] = [
         role: "Software Engineer",
         context: "Apple Developer Academy",
         dateRange: "Sep 2025 - Dec 2025",
+        image: "/projects/RiSTOCK.jpg",
         description:
           "Award-winning dessert discovery app with AR menu preview, winning Nano 1 Challenge 2025.",
         longDescription: `RiSTOCK is a dessert discovery application that helps users find nearby dessert shops and preview menu items in augmented reality before ordering.
