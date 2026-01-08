@@ -5,9 +5,9 @@ export default function Header() {
 
         {/* Left Side — Identity */}
         <div>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6">
+          <p className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6 text-black dark:text-white" role="heading" aria-level={2}>
             Hi, I'm Riz!
-          </h2>
+          </p>
 
           <div className="mb-6">
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300">

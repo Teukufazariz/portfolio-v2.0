@@ -12,12 +12,6 @@ export default function Home() {
   return (
     <>
       <ThemeToggle />
-      <a
-        href="#main-content"
-        className="absolute top-[-40px] left-0 bg-black text-white px-4 py-2 no-underline z-50 focus:top-0"
-      >
-        Skip to main content
-      </a>
 
       <motion.main
         id="main-content"
