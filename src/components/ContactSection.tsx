@@ -51,12 +51,12 @@ export default function ContactSection() {
         <div>
           <h3 className="text-sm font-bold mb-3">Currently Open To:</h3>
           <div className="mb-3">
-            <span className="text-lg text-gray-600 dark:text-gray-400">
+            <span className="text-lg">
               - iOS Development Opportunities
             </span>
           </div>
           <div className="mb-3">
-            <span className="text-lg text-gray-600 dark:text-gray-400">
+            <span className="text-lg">
               - Collaborations and Projects
             </span>
           </div>
