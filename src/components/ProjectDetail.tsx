@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Project } from "@/data/portfolio";
@@ -12,7 +15,12 @@ export default function ProjectDetail({ project, previousProject, nextProject }:
   const hasLinks = project.githubUrl || project.demoUrl || project.appStoreUrl;
 
   return (
-    <article className="max-w-[1000px] mx-auto px-10 py-15">
+    <motion.article
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="max-w-[1000px] mx-auto px-10 py-15"
+    >
       {/* Back Navigation */}
       <Link 
         href="/#projects" 
@@ -236,6 +244,6 @@ export default function ProjectDetail({ project, previousProject, nextProject }:
           </div>
         </nav>
       )}
-    </article>
+    </motion.article>
   );
 }

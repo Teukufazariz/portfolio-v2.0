@@ -23,7 +23,7 @@ export default function Home() {
         id="main-content"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-16"
       >
         <Header />
