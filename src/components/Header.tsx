@@ -5,14 +5,14 @@ export default function Header() {
 
         {/* Left Side — Identity */}
         <div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6">
             Hi, I'm Riz!
-          </h1>
+          </h2>
 
           <div className="mb-6">
-            <p className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300">
+            <h1 className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300">
               Teuku Fazariz Basya · Software Engineer
-            </p>
+            </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
               Specialized in iOS & macOS Development
             </p>
