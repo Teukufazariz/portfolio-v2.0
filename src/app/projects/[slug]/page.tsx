@@ -79,5 +79,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  return <ProjectDetail project={project} previousProject={previous || undefined} nextProject={next || undefined} />;
+  return (
+    <main id="main-content">
+      <ProjectDetail project={project} previousProject={previous || undefined} nextProject={next || undefined} />
+    </main>
+  );
 }
