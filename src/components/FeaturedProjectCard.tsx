@@ -28,7 +28,7 @@ export default function FeaturedProjectCard({
 }: FeaturedProjectCardProps) {
   return (
     <Link href={`/projects/${slug}`} className="block group">
-      <article className="bg-gray-50 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[8px_8px_0_0_#000] dark:hover:shadow-[8px_8px_0_0_#fff] hover:-translate-x-1 hover:-translate-y-1 h-full">
+      <article className="bg-gray-50 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[8px_8px_0_0_rgb(209,213,219)] dark:hover:shadow-[8px_8px_0_0_rgb(209,213,219)] hover:-translate-x-1 hover:-translate-y-1 h-full">
         {/* Project Image */}
         <div className="w-full aspect-video bg-gray-200 dark:bg-neutral-800 flex items-center justify-center overflow-hidden relative">
           {image ? (
