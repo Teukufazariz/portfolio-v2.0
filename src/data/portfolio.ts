@@ -83,6 +83,7 @@ Key features include location-based dessert shop discovery, AR menu previews tha
         role: "iOS Developer",
         context: "Apple Developer Academy",
         dateRange: "Aug 2025 - Sep 2025",
+        image: "/projects/Coco.jpg",
         description:
           "Snorkeling trip booking app with collaborative features for smarter group-based travel planning.",
         longDescription: `COCO.CO is a snorkeling trip booking application that enables group-based travel planning with collaborative features.
@@ -90,6 +91,14 @@ Key features include location-based dessert shop discovery, AR menu previews tha
 The app allows users to discover snorkeling destinations, create group trips, and coordinate logistics with friends and family. Built with a focus on code quality using Swift Testing and SwiftLint.
 
 Key features include destination discovery, group trip creation, shared itineraries, and real-time collaboration.`,
+        problem: "Customers often struggle to visualize dessert portions and presentations before ordering, leading to unmet expectations and food waste. Traditional menus with static images don't convey the actual size or appearance of dishes.",
+        solution: "We built an AR-powered preview system that lets users see life-sized 3D models of desserts on their table before ordering. Combined with location-based discovery, users can find nearby shops and make informed decisions.",
+        keyContributions: [
+        "Architected the AR preview system using ARKit, enabling realistic 3D dessert visualization",
+        "Implemented location-based search with MapKit and CoreLocation for nearby shop discovery",
+        "Led the UI/UX design following Apple Human Interface Guidelines",
+        "Optimized 3D model loading for smooth performance on older devices",
+        ],
         technologies: ["SwiftUI", "UIKit", "Swift Testing", "SwiftLint"],
         year: "2025",
         imageAlt: "COCO.CO booking interface",
@@ -104,6 +113,7 @@ Key features include destination discovery, group trip creation, shared itinerar
         role: "iOS Developer",
         context: "Apple Developer Academy",
         dateRange: "May 2025 - June 2025",
+        image: "/projects/PercaTalk.jpg",
         description:
           "AI-powered speech analysis tool helping users improve public speaking skills.",
         longDescription: `PercaTalk is an AI-powered speech analysis tool designed to help users improve their public speaking skills through real-time feedback and personalized coaching.
@@ -111,6 +121,14 @@ Key features include destination discovery, group trip creation, shared itinerar
 The app uses CoreML models to analyze speech patterns, pacing, filler words, and vocal clarity. Users can record practice sessions and receive detailed analytics on their performance.
 
 Features include speech-to-text transcription, filler word detection, pacing analysis, and progress tracking over time.`,
+        problem: "Customers often struggle to visualize dessert portions and presentations before ordering, leading to unmet expectations and food waste. Traditional menus with static images don't convey the actual size or appearance of dishes.",
+        solution: "We built an AR-powered preview system that lets users see life-sized 3D models of desserts on their table before ordering. Combined with location-based discovery, users can find nearby shops and make informed decisions.",
+        keyContributions: [
+        "Architected the AR preview system using ARKit, enabling realistic 3D dessert visualization",
+        "Implemented location-based search with MapKit and CoreLocation for nearby shop discovery",
+        "Led the UI/UX design following Apple Human Interface Guidelines",
+        "Optimized 3D model loading for smooth performance on older devices",
+        ],
         technologies: ["SwiftUI", "CoreML", "AVFoundation", "SwiftData"],
         year: "2025",
         imageAlt: "PercaTalk speech analysis interface",
@@ -131,6 +149,14 @@ Features include speech-to-text transcription, filler word detection, pacing ana
 The app integrates with your calendar to find optimal workout times, tracks your jogging sessions, and adapts recommendations based on your fitness progress.
 
 Features include smart scheduling, calendar integration, workout tracking, and progress analytics.`,
+        problem: "Customers often struggle to visualize dessert portions and presentations before ordering, leading to unmet expectations and food waste. Traditional menus with static images don't convey the actual size or appearance of dishes.",
+        solution: "We built an AR-powered preview system that lets users see life-sized 3D models of desserts on their table before ordering. Combined with location-based discovery, users can find nearby shops and make informed decisions.",
+        keyContributions: [
+        "Architected the AR preview system using ARKit, enabling realistic 3D dessert visualization",
+        "Implemented location-based search with MapKit and CoreLocation for nearby shop discovery",
+        "Led the UI/UX design following Apple Human Interface Guidelines",
+        "Optimized 3D model loading for smooth performance on older devices",
+        ],
         technologies: ["SwiftUI", "SwiftData", "EventKit"],
         year: "2025",
         imageAlt: "Swifter workout schedule",

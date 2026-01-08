@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Teuku Fazariz Basya — iOS Developer",
+  title: "Teuku Fazariz B.",
   description:
     "Teuku Fazariz Basya - iOS Developer specializing in Swift, SwiftUI, and UIKit. Apple Developer Academy 2025.",
 };

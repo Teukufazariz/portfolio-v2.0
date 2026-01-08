@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface ProjectCardProps {
   number: string;
@@ -11,6 +12,7 @@ interface ProjectCardProps {
   technologies: string[];
   year: string;
   imageAlt: string;
+  image?: string;
 }
 
 export default function ProjectCard({
@@ -21,19 +23,30 @@ export default function ProjectCard({
   description,
   technologies,
   year,
+  image,
+  imageAlt,
 }: ProjectCardProps) {
   return (
     <Link href={`/projects/${slug}`} className="block group">
       <article className="bg-gray-50 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[4px_4px_0_0_#000] dark:hover:shadow-[4px_4px_0_0_#fff] hover:-translate-x-0.5 hover:-translate-y-0.5 h-full">
         {/* Project Image */}
-        <div className="w-full h-48 bg-gray-200 dark:bg-neutral-800 border-b border-gray-300 dark:border-neutral-700 flex items-center justify-center overflow-hidden">
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-neutral-800 dark:to-neutral-700 text-gray-400 dark:text-gray-500 font-bold text-3xl transition-transform duration-300 group-hover:scale-105">
-            {title.charAt(0)}
-          </div>
+        <div className="w-full aspect-video bg-gray-200 dark:bg-neutral-800 border-b border-gray-300 dark:border-neutral-700 flex items-center justify-center overflow-hidden relative">
+          {image ? (
+            <Image
+              src={image}
+              alt={imageAlt}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-neutral-800 dark:to-neutral-700 text-gray-400 dark:text-gray-500 font-bold text-3xl transition-transform duration-300 group-hover:scale-105">
+              {title.charAt(0)}
+            </div>
+          )}
         </div>
 
         {/* Project Content */}
-        <div className="p-5 flex flex-col flex-grow">
+        <div className="p-4 flex flex-col flex-grow">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-widest">
               {number}
@@ -61,7 +74,7 @@ export default function ProjectCard({
           {/* View Details CTA */}
           <div className="mt-auto pt-3 border-t border-gray-200 dark:border-neutral-700">
             <span className="inline-flex items-center gap-2 text-xs font-semibold group-hover:underline underline-offset-4">
-              View Details
+              View Project Details
               <span className="transition-transform duration-200 group-hover:translate-x-1">
                 →
               </span>

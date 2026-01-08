@@ -33,7 +33,7 @@ export default function ProjectDetail({ project, previousProject, nextProject }:
 
       {/* Hero Image */}
       <div className="mb-15">
-        <div className="w-full aspect-video border-2 border-[var(--border-color)] overflow-hidden bg-[var(--bg-secondary)] relative">
+        <div className="w-full aspect-video border-2 border-gray-300 overflow-hidden bg-[var(--bg-secondary)] relative">
           {project.image ? (
             <Image
               src={project.image}

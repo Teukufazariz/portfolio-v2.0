@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface FeaturedProjectCardProps {
   number: string;
@@ -11,6 +12,7 @@ interface FeaturedProjectCardProps {
   technologies: string[];
   year: string;
   imageAlt: string;
+  image?: string;
 }
 
 export default function FeaturedProjectCard({
@@ -21,15 +23,26 @@ export default function FeaturedProjectCard({
   description,
   technologies,
   year,
+  image,
+  imageAlt,
 }: FeaturedProjectCardProps) {
   return (
     <Link href={`/projects/${slug}`} className="block group">
-      <article className="bg-gray-50 dark:bg-neutral-900 border-2 border-black dark:border-white flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[8px_8px_0_0_#000] dark:hover:shadow-[8px_8px_0_0_#fff] hover:-translate-x-1 hover:-translate-y-1 h-full">
+      <article className="bg-gray-50 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 flex flex-col overflow-hidden transition-all duration-200 hover:shadow-[8px_8px_0_0_#000] dark:hover:shadow-[8px_8px_0_0_#fff] hover:-translate-x-1 hover:-translate-y-1 h-full">
         {/* Project Image */}
-        <div className="w-full aspect-video bg-gray-200 dark:bg-neutral-800 border-b-2 border-black dark:border-white flex items-center justify-center overflow-hidden">
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-neutral-800 dark:to-neutral-700 text-gray-400 dark:text-gray-500 font-bold text-5xl transition-transform duration-300 group-hover:scale-105">
-            {title.charAt(0)}
-          </div>
+        <div className="w-full aspect-video bg-gray-200 dark:bg-neutral-800 flex items-center justify-center overflow-hidden relative">
+          {image ? (
+            <Image
+              src={image}
+              alt={imageAlt}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 dark:from-neutral-800 dark:to-neutral-700 text-gray-400 dark:text-gray-500 font-bold text-5xl transition-transform duration-300 group-hover:scale-105">
+              {title.charAt(0)}
+            </div>
+          )}
         </div>
 
         {/* Project Content */}

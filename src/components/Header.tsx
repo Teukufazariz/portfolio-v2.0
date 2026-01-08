@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="mb-24">
+    <header className="mb-8 md:mb-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 px-0 py-16 border-b border-black/20 dark:border-white/20">
 
         {/* Left Side — Identity */}
