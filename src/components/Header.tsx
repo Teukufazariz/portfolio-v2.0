@@ -1,17 +1,20 @@
 export default function Header() {
   return (
-    <header className="mb-8 md:mb-20">
+    <header className="mb-8 md:mb-16">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 px-0 py-16 border-b border-black/20 dark:border-white/20">
 
         {/* Left Side — Identity */}
         <div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none mb-6">
-            Hi, I&apos;m Riz!
+            Hi, I'm Riz!
           </h1>
 
           <div className="mb-6">
             <p className="text-2xl md:text-3xl font-semibold text-gray-700 dark:text-gray-300">
-              Teuku Fazariz Basya · iOS Developer
+              Teuku Fazariz Basya · Software Engineer
+            </p>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+              Specialized in iOS & macOS Development
             </p>
             <p className="text-base text-gray-500 dark:text-gray-400 mt-1">
               Jakarta, Indonesia
@@ -111,9 +114,7 @@ export default function Header() {
               About
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-              Apple Developer Academy 2025 mentee specializing in multiplatform iOS
-              and macOS development. Focused on building clean, scalable, and
-              user-friendly experiences with Swift, SwiftUI, and UIKit.
+              Software Engineer specializing in iOS and Apple platform development, building clean, scalable, and user-friendly applications with Swift, SwiftUI, and UIKit. Experienced in collaborating across projects and exploring web development and machine learning.
             </p>
           </div>
 
@@ -121,11 +122,22 @@ export default function Header() {
             <h2 className="text-sm font-bold tracking-wide uppercase mb-3">
               Education
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+            {/* <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
               Computer Science student at Multimedia Nusantara University (GPA
               3.57/4), currently advancing iOS development skills through hands-on
               project work.
-            </p>
+            </p> */}
+            <div>
+              <p className="text-lg font-semibold text-gray-600 dark:text-gray-400 leading-relaxed">
+                Multimedia Nusantara University
+              </p>
+              <p className="text-md text-gray-500 dark:text-gray-400 leading-relaxed">
+                Computer Science · 2022 – 2026
+              </p>
+              <p className="text-md text-gray-500 dark:text-gray-400 leading-relaxed">
+                GPA: 3.57 / 4.00
+              </p>
+            </div>
           </div>
         </div>
 
