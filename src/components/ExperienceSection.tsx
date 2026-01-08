@@ -24,16 +24,15 @@ export default function ExperienceSection({
   return (
     <section className="mb-20" id="projects" aria-labelledby="experience-heading">
       {/* Section Header */}
-      <div className="mb-10 pb-5 ">
-        <h2
+      <div className="mb-5 pb-5 ">
+        <h3
           id="experience-heading"
-          className="text-3xl md:text-5xl font-bold leading-tight mb-3"
+          className="text-3xl md:text-5xl font-bold leading-tight mb-1"
         >
           Selected Projects
-        </h2>
-        <p className="text-base text-gray-500 dark:text-gray-400">
-          Highlighting my best work from Apple Developer Academy and professional
-          experience
+        </h3>
+        <p className="text-base md:text-lg text-gray-500 dark:text-gray-400">
+          A curated selection of my work.
         </p>
       </div>
 
@@ -86,9 +85,8 @@ export default function ExperienceSection({
       <div className="mt-16 pt-8 md:pt-16 border-t-2 border-black dark:border-white">
         <h3 className="text-3xl md:text-5xl font-bold mb-3">Experience</h3>
 
-        <p className="text-base text-gray-500 dark:text-gray-400 mb-4">
-          Highlighting my best work from Apple Developer Academy and professional
-          experience
+        <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 mb-4">
+          Where I’ve applied my skills through real projects.
         </p>
         
         <div className="relative md:pl-20 flex flex-col gap-0">
