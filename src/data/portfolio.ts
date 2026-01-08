@@ -71,8 +71,8 @@ Key features include location-based dessert shop discovery, AR menu previews tha
         technologies: ["SwiftUI", "ARKit", "MapKit", "CoreLocation"],
         year: "2025",
         imageAlt: "RiSTOCK app interface",
-        githubUrl: "https://github.com/teukufazariz/ristock",
-        appStoreUrl: "https://apps.apple.com/app/ristock/id123456789",
+        githubUrl: "https://github.com/ristock-id",
+        appStoreUrl: "https://apps.apple.com/id/app/ristock-always-in-stock/id6755036106?mt=12",
         featured: true,
       },
 
@@ -102,8 +102,6 @@ Key features include destination discovery, group trip creation, shared itinerar
         technologies: ["SwiftUI", "UIKit", "Swift Testing", "SwiftLint"],
         year: "2025",
         imageAlt: "COCO.CO booking interface",
-        githubUrl: "https://github.com/teukufazariz/coco-co",
-        appStoreUrl: "https://apps.apple.com/app/coco-co/id123456790",
         featured: true,
       },
       {
@@ -132,8 +130,7 @@ Features include speech-to-text transcription, filler word detection, pacing ana
         technologies: ["SwiftUI", "CoreML", "AVFoundation", "SwiftData"],
         year: "2025",
         imageAlt: "PercaTalk speech analysis interface",
-        githubUrl: "https://github.com/teukufazariz/percatalk",
-        appStoreUrl: "https://apps.apple.com/app/percatalk/id123456791",
+        githubUrl: "https://github.com/reinhart-c/project-kevin-speech-trainer",
       },
       {
         number: "04",
@@ -141,7 +138,7 @@ Features include speech-to-text transcription, filler word detection, pacing ana
         slug: "swifter",
         role: "iOS Developer",
         context: "Apple Developer Academy",
-        dateRange: "August 2025 - September 2025",
+        dateRange: "March - April 2025",
         description:
           "Jogging routine planner that intelligently schedules workouts around calendar commitments.",
         longDescription: `Swifter is a jogging routine planner that intelligently schedules workouts around your existing calendar commitments.
@@ -161,7 +158,6 @@ Features include smart scheduling, calendar integration, workout tracking, and p
         year: "2025",
         imageAlt: "Swifter workout schedule",
         githubUrl: "https://github.com/teukufazariz/swifter",
-        appStoreUrl: "https://apps.apple.com/app/swifter/id123456792",
       },
     ],
   },
