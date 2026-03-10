@@ -140,7 +140,7 @@ export default function Header() {
                 Computer Science · 2022 – 2026
               </p>
               <p className="text-md text-gray-500 dark:text-gray-400 leading-relaxed">
-                GPA: 3.57 / 4.00
+                GPA: 3.63 / 4.00
               </p>
             </div>
           </div>
