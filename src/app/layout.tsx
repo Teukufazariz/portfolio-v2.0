@@ -42,16 +42,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  /** Parallel route: the case study sheet, see src/app/@modal */
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
-        <a
-          href="#main-content"
-          className="absolute top-[-40px] left-0 bg-black text-white px-4 py-2 no-underline z-50 focus:top-0 focus:outline-none"
-        >
+      <head>
+        {/* Apply a saved theme before first paint so there is no flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
+      <body>
+        <a href="#main-content" className="skip">
           Skip to main content
         </a>
         <script
@@ -73,6 +81,7 @@ export default function RootLayout({
         />
 
         {children}
+        {modal}
 
         <Analytics />
         <SpeedInsights />

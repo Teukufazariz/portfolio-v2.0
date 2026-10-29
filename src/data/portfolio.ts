@@ -1,30 +1,33 @@
 export interface Project {
-  number: string;
   slug: string;
   title: string;
+  /** One short line for the timeline, e.g. "Group booking for snorkeling trips." */
+  tagline: string;
+  platform: string;
   role: string;
+  /** "YYYY-MM", inclusive */
+  start: string;
+  end: string;
   description: string;
   longDescription?: string;
   problem?: string;
   solution?: string;
   keyContributions?: string[];
   technologies: string[];
-  year: string;
   image?: string;
   imageAlt: string;
   context?: string;
-  dateRange?: string;
   githubUrl?: string;
   demoUrl?: string;
-  appStoreUrl?: string; 
-  featured?: boolean;
+  appStoreUrl?: string;
 }
 
 export interface Experience {
   title: string;
   role: string;
-  dateRange: string;
-  logoPlaceholder?: string;
+  /** "YYYY-MM", inclusive */
+  start: string;
+  end: string;
   description: string;
   achievements?: string[];
   projects: Project[];
@@ -34,8 +37,8 @@ export const experiences: Experience[] = [
   {
       title: "Apple Developer Academy",
       role: "iOS Developer",
-      dateRange: "March 2025 - December 2025",
-      logoPlaceholder: "🍎",
+      start: "2025-03",
+      end: "2025-12",
       description:
         "A 10 months project-based program focused on building production-quality iOS and macOS applications. Worked in multidisciplinary teams to design, implement, and iterate on real-world products under tight timelines, user feedback, and technical constraints.",
       achievements: [
@@ -47,12 +50,14 @@ export const experiences: Experience[] = [
     ],
     projects: [
       {
-        number: "01",
         title: "RiSTOCK",
         slug: "ristock",
+        tagline: "Tells shop owners which stock to count first.",
+        platform: "macOS, iOS",
         role: "Software Engineer",
         context: "Apple Developer Academy",
-        dateRange: "Sep 2025 - Dec 2025",
+        start: "2025-09",
+        end: "2025-12",
         image: "/projects/RiSTOCK.jpg",
         description:
           "Multiplatform inventory management app that helps business owners optimize stock opname.",
@@ -71,20 +76,20 @@ export const experiences: Experience[] = [
           "Developed the authentication backend endpoint to support client applications"
         ],
         technologies: ["SwiftUI", "UIKit", "AppKit", "Flask", "MySQL"],
-        year: "2025",
         imageAlt: "RiSTOCK inventory dashboard",
         githubUrl: "https://github.com/ristock-id",
         appStoreUrl: "https://apps.apple.com/id/app/ristock-always-in-stock/id6755036106?mt=12",
-        featured: true,
       },
 
       {
-        number: "02",
         title: "COCO.CO",
         slug: "coco-co",
+        tagline: "Group booking for snorkeling trips.",
+        platform: "iOS",
         role: "iOS Developer",
         context: "Apple Developer Academy",
-        dateRange: "Aug 2025 - Sep 2025",
+        start: "2025-08",
+        end: "2025-09",
         image: "/projects/Coco.jpg",
         description:
           "Snorkeling trip booking app enabling groups to collaborate in real-time.",
@@ -102,17 +107,17 @@ export const experiences: Experience[] = [
           "Adhere to code quality standards using SwiftLint and rigorous Unit Testing",
         ],
         technologies: ["SwiftUI", "UIKit", "Swift Testing"],
-        year: "2025",
         imageAlt: "COCO.CO booking interface",
-        featured: true,
       },
       {
-        number: "03",
         title: "PercaTalk",
         slug: "percatalk",
+        tagline: "Scores how you speak, using on-device ML.",
+        platform: "macOS",
         role: "macOS Developer",
         context: "Apple Developer Academy",
-        dateRange: "May 2025 - June 2025",
+        start: "2025-05",
+        end: "2025-06",
         image: "/projects/PercaTalk.jpg",
         description:
           "AI-powered speech training tool that analyzes vocal delivery and provides on-device feedback.",
@@ -131,17 +136,18 @@ export const experiences: Experience[] = [
           "Implementing the design for the video recording and scoring interface",
         ],
         technologies: ["SwiftUI", "CoreML", "AVFoundation", "SwiftData"],
-        year: "2025",
         imageAlt: "PercaTalk speech analysis interface",
         githubUrl: "https://github.com/reinhart-c/project-kevin-speech-trainer",
       },
       {
-        number: "04",
         title: "Swifter",
         slug: "swifter",
+        tagline: "Schedules jogs into free time in your calendar.",
+        platform: "iOS",
         role: "iOS Developer",
         context: "Apple Developer Academy",
-        dateRange: "March - April 2025",
+        start: "2025-03",
+        end: "2025-04",
         image: "/projects/Swifter.png",
         description:
           "Smart jogging planner that integrates with Apple Calendar to automatically schedule jogs.",
@@ -158,7 +164,6 @@ export const experiences: Experience[] = [
           "In charge of developing the calendar page, integrating EventKit for real-time availability",
         ],
         technologies: ["SwiftUI", "SwiftData", "EventKit"],
-        year: "2025",
         imageAlt: "Swifter workout schedule",
         githubUrl: "https://github.com/teukufazariz/swifter",
       },
@@ -167,8 +172,8 @@ export const experiences: Experience[] = [
   {
     title: "PT. Jaya Santoso Teknologi",
     role: "Frontend Developer",
-    dateRange: "January 2025 - July 2025",
-    logoPlaceholder: "💍",
+    start: "2025-01",
+    end: "2025-07",
     description:
       "Developed responsive wedding invitation platforms with modern UI/UX and integrated guest management systems.",
     achievements: [
@@ -178,12 +183,14 @@ export const experiences: Experience[] = [
     ],
     projects: [
       {
-        number: "05",
         title: "Wedding Invitation",
         slug: "wedding-invitation",
+        tagline: "Wedding invitations with QR code check-in.",
+        platform: "Web",
         role: "Frontend Developer",
         context: "PT. Jaya Santoso Teknologi",
-        dateRange: "January 2025 - July 2025",
+        start: "2025-01",
+        end: "2025-07",
         image: "/projects/Minymablur.jpg",
         description:
           "A Digital wedding invitation featuring responsive invitations and a QR-based check-in system.",
@@ -197,7 +204,6 @@ export const experiences: Experience[] = [
           "Integrated REST APIs to sync RSVP data with the guest management dashboard"
         ],
         technologies: ["React.js", "Tailwind CSS", "REST APIs"],
-        year: "2025",
         imageAlt: "Wedding invitation website",
         // githubUrl: "https://github.com/teukufazariz/wedding-platform",
         // demoUrl: "https://wedding-demo.example.com",
@@ -205,3 +211,36 @@ export const experiences: Experience[] = [
     ],
   },
 ];
+
+/** The months the home timeline covers, "YYYY-MM", inclusive. Extend `end` as time passes. */
+export const timeline = { start: "2025-01", end: "2026-12" };
+
+/** Newest first, in the order the experiences and projects are listed above. */
+export const allProjects = experiences.flatMap((exp) => exp.projects);
+
+export const getProject = (slug: string) => allProjects.find((p) => p.slug === slug);
+
+const parse = (ym: string) => ym.split("-").map(Number) as [number, number];
+
+/** Months from `timeline.start` to a "YYYY-MM" date. */
+export function monthIndex(ym: string) {
+  const [y, m] = parse(ym), [y0, m0] = parse(timeline.start);
+  return (y - y0) * 12 + (m - m0);
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "Sep–Dec 2025", or "Nov 2025–Feb 2026" across years. */
+export function formatRange(start: string, end: string) {
+  const [ys, ms] = parse(start), [ye, me] = parse(end);
+  return ys === ye
+    ? `${MONTHS[ms - 1]}–${MONTHS[me - 1]} ${ye}`
+    : `${MONTHS[ms - 1]} ${ys}–${MONTHS[me - 1]} ${ye}`;
+}
+
+/** Splits a template-string description into its paragraphs. */
+export const paragraphs = (text?: string) =>
+  text ? text.split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean) : [];
+
+/** Jakarta is UTC+7 all year (no daylight saving), so a fixed offset is exact. Read with getUTC*. */
+export const jakartaNow = () => new Date(Date.now() + 7 * 36e5);
