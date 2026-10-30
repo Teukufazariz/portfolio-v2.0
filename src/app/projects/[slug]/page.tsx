@@ -27,23 +27,17 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   return {
     title: project.title,
     description: project.description,
+    // Without a screenshot, the page inherits the site image from src/app/opengraph-image.tsx.
     openGraph: {
       title: project.title,
       description: project.description,
-      images: [
-        {
-          url: project.image ?? "/og.png",
-          width: 1200,
-          height: 630,
-          alt: project.imageAlt ?? `${project.title} – iOS Project`,
-        },
-      ],
+      ...(project.image && { images: [{ url: project.image, alt: project.imageAlt }] }),
     },
     twitter: {
       card: "summary_large_image",
       title: project.title,
       description: project.description,
-      images: [project.image ?? "/og.png"],
+      ...(project.image && { images: [project.image] }),
     },
   };
 }

@@ -24,6 +24,9 @@ export type TimelineBar = {
 
 const LETTERS = "JFMAMJJASOND";
 
+/** Tells the grain behind the page (src/components/Grain.tsx) which screenshot to form, or none. */
+const grain = (src?: string) => dispatchEvent(new CustomEvent("grain", { detail: src ?? null }));
+
 export const Chevron = () => (
   <svg className="chev" viewBox="0 0 8 14" aria-hidden="true">
     <path d="M1.5 1.5 6.5 7 1.5 12.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
@@ -49,7 +52,7 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
   const bars = rows.filter((r): r is TimelineBar => r.kind === "bar");
   const [selected, setSelected] = useState(initial);
   const [now, setNow] = useState<{ x: number; month: number } | null>(null);
-  const [fit, setFit] = useState<Record<string, "out" | "roomy" | "">>({});
+  const [fit, setFit] = useState<Record<string, string>>({});
   const wrap = useRef<HTMLDivElement>(null);
   const shown = bars.find((b) => b.slug === selected) ?? bars[0];
 
@@ -62,17 +65,20 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
     if (x >= 0 && x < months) setNow({ x: x / months, month: index });
   }, [startYear, startMonth, months]);
 
-  // A label that does not fit inside its bar moves to the right of it.
+  // A label that does not fit inside its bar moves to the right of it, or to the left near the end of the grid.
   useLayoutEffect(() => {
     const el = wrap.current;
     if (!el) return;
     const measure = () => {
-      const next: Record<string, "out" | "roomy" | ""> = {};
+      const next: Record<string, string> = {};
+      const end = el.getBoundingClientRect().right;
       el.querySelectorAll<HTMLAnchorElement>(".bar").forEach((bar) => {
         const label = bar.querySelector<HTMLElement>(".lbl");
         if (!label || !bar.dataset.slug) return;
         const room = bar.clientWidth - label.scrollWidth - 20;
-        next[bar.dataset.slug] = room < 0 ? "out" : room > 36 ? "roomy" : "";
+        const right = end - bar.getBoundingClientRect().right;
+        next[bar.dataset.slug] =
+          room > 36 ? "roomy" : room >= 0 ? "" : right > label.scrollWidth + 20 ? "out" : "out left";
       });
       setFit(next);
     };
@@ -98,7 +104,7 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
           })}
         </div>
 
-        <ol className="rows">
+        <ol className="rows" onMouseLeave={() => grain()}>
           {rows.map((r, i) => {
             const style = { gridColumn: `${r.start + 1} / ${r.end + 2}`, gridRow: i + 1, "--r": i } as React.CSSProperties;
             if (r.kind === "lane") {
@@ -117,8 +123,15 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
                   data-slug={r.slug}
                   data-selected={selected === r.slug || undefined}
                   style={{ "--r": i } as React.CSSProperties}
-                  onMouseEnter={() => setSelected(r.slug)}
-                  onFocus={() => setSelected(r.slug)}
+                  onMouseEnter={() => {
+                    setSelected(r.slug);
+                    grain(r.image);
+                  }}
+                  onFocus={() => {
+                    setSelected(r.slug);
+                    grain(r.image);
+                  }}
+                  onBlur={() => grain()}
                 >
                   <span className="m-when">{r.when}</span>
                   <span className="lbl">{r.title}</span>

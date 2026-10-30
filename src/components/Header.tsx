@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Clock from "./Clock";
-import ThemeToggle from "./ThemeToggle";
+import Modes from "./Modes";
 
 export default function Header() {
   return (
@@ -10,12 +10,12 @@ export default function Header() {
           <b>Teuku Fazariz Basya</b>
         </Link>
         <br />
-        iOS and macOS engineer
+        DevOps engineer
       </p>
       <p>
-        Open to iOS roles
+        Open to DevOps, platform,
         <br />
-        and collaborations
+        cloud and SRE roles
       </p>
       <ul className="nav">
         <li>
@@ -28,7 +28,7 @@ export default function Header() {
           <a href="https://github.com/teukufazariz" target="_blank" rel="noopener noreferrer">GitHub</a>
         </li>
         <li>
-          <ThemeToggle />
+          <Modes />
         </li>
       </ul>
       <Clock />

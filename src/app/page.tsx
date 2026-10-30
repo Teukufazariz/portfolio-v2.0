@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Timeline, { TimelineBar, TimelineLane } from "@/components/Timeline";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { allProjects, experiences, formatRange, monthIndex, timeline } from "@/data/portfolio";
+import { experiences, formatRange, monthIndex, timeline } from "@/data/portfolio";
 
 const byStart = (a: { start: string }, b: { start: string }) => a.start.localeCompare(b.start);
 
@@ -28,16 +28,31 @@ const rows = [...experiences].sort(byStart).flatMap((exp): (TimelineLane | Timel
 
 const [startYear, startMonth] = timeline.start.split("-").map(Number);
 
+// The Skills section of ~/Riz/Latex/CV/TeukuFazarizBasya_CV.tex. Keep the two in step.
+const tools = [
+  ["Cloud", "AWS (EC2, VPC, EKS, ECR, S3, IAM, RDS, ElastiCache, Route 53, Secrets Manager, CloudWatch), GCP (GKE)"],
+  ["Containers and Kubernetes", "Docker, Kubernetes (EKS, kubeadm, kind), Helm"],
+  ["GitOps and CI/CD", "Argo CD, Argo Rollouts, GitLab CI, Bitbucket Pipelines, Jenkins, SonarQube"],
+  ["Infrastructure as code", "Terraform, Ansible, Packer"],
+  ["Observability", "Grafana, Prometheus, Grafana Alloy, Datadog, k6"],
+  ["Platform engineering", "Backstage"],
+  ["Databases", "PostgreSQL, Redis"],
+  ["Linux and networking", "Ubuntu, systemd, Nginx, DNS, TLS"],
+  ["Languages", "Bash, Go, Python"],
+];
+
 export default function Home() {
   return (
     <div className="page">
       <Header />
       <main id="main-content">
         <section className="hero grid" aria-label="Introduction">
-          <h1 className="headline">I’m Riz. I build native apps for iPhone and Mac.</h1>
+          <h1 className="headline">I’m Riz. I get software from a git push to production.</h1>
           <p className="lead">
-            At the Apple Developer Academy I helped ship RiSTOCK, now on the Mac App Store. This is everything
-            I’ve built since January 2025.
+            I cut a Rust backend’s cold CI pipeline from 47:24 to 18:00 and ran canary releases on Amazon EKS
+            through Argo CD and Argo Rollouts. With a team of four, I’m now building a Backstage developer portal at
+            Nanovest for about 50 services. Before DevOps I built iOS and Mac apps; one of them, RiSTOCK, is on the
+            App Store.
           </p>
         </section>
 
@@ -46,16 +61,50 @@ export default function Home() {
           startYear={startYear}
           startMonth={startMonth}
           months={monthIndex(timeline.end) + 1}
-          initial={allProjects[0].slug}
+          initial="planpal-kubernetes"
         />
+
+        <section className="section grid" aria-labelledby="tools-heading">
+          <h2 id="tools-heading">Tools</h2>
+          <dl className="list">
+            {tools.map(([area, names]) => (
+              <div className="entry" key={area}>
+                <dt className="when">{area}</dt>
+                <dd className="body">{names}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
         <section className="section grid" aria-labelledby="education-heading">
           <h2 id="education-heading">Education</h2>
-          <div className="edu">
-            <p className="when tab">2022–2026</p>
-            <div className="body">
-              <h3>Multimedia Nusantara University</h3>
-              <p className="muted">Computer Science, GPA 3.63 / 4.00</p>
+          <div className="list">
+            <div className="entry">
+              <p className="when tab">2022–2026</p>
+              <div className="body">
+                <h3>Multimedia Nusantara University</h3>
+                <p className="muted">Computer Science (S.Kom), GPA 3.61 / 4.00. Graduated October 2026.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section grid" aria-labelledby="awards-heading">
+          <h2 id="awards-heading">Awards</h2>
+          <div className="list">
+            <div className="entry">
+              <p className="when tab">2026</p>
+              <div className="body">
+                <h3>Swift Student Challenge winner</h3>
+                <p className="muted">Apple. Groove Haven, a digital vinyl experience built with RealityKit.</p>
+              </div>
+            </div>
+            <div className="entry">
+              <p className="when tab">2026</p>
+              <div className="body">
+                <h3>IT Specialist: Networking</h3>
+                <p className="muted">Certiport certification.</p>
+              </div>
             </div>
           </div>
         </section>

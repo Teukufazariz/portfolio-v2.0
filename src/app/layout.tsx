@@ -2,41 +2,34 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Grain from "@/components/Grain";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://teukufazariz.vercel.app"),
   title: {
-    default: "Teuku Fazariz Basya - iOS Developer",
+    default: "Teuku Fazariz Basya - DevOps Engineer",
     template: "%s | Teuku Fazariz Basya",
   },
   description:
-    "Teuku Fazariz Basya - Software Engineer specializing in iOS and Apple platform development.",
+    "Teuku Fazariz Basya - DevOps engineer working with CI/CD, Kubernetes, and Terraform on AWS.",
   verification: {
     google: "TnxEcHE1XPeimczF5oVyymXNNpTZ4JK3W5i7gMOn2T4",
   },
   openGraph: {
     title: "Teuku Fazariz Basya",
     description:
-      "Teuku Fazariz Basya - Software Engineer specializing in iOS and Apple platform development.",
+      "Teuku Fazariz Basya - DevOps engineer working with CI/CD, Kubernetes, and Terraform on AWS.",
     url: "https://teukufazariz.vercel.app",
     siteName: "Teuku Fazariz Basya",
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Teuku Fazariz Basya Portfolio",
-      },
-    ],
+    // The image comes from src/app/opengraph-image.tsx
   },
   twitter: {
     card: "summary_large_image",
     title: "Teuku Fazariz Basya",
     description:
-      "Teuku Fazariz Basya - Software Engineer specializing in iOS and Apple platform development.",
-    images: ["/og.png"],
+      "Teuku Fazariz Basya - DevOps engineer working with CI/CD, Kubernetes, and Terraform on AWS.",
   },
 };
 
@@ -51,10 +44,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Apply a saved theme before first paint so there is no flash */}
+        {/* Before first paint: apply the saved theme so nothing flashes, and play the intro once per visit */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`,
+            __html: `try{var d=document.documentElement;var t=localStorage.getItem("theme");if(t)d.dataset.theme=t;if(sessionStorage.getItem("intro"))d.classList.add("seen");else sessionStorage.setItem("intro","1")}catch(e){}`,
           }}
         />
       </head>
@@ -62,6 +55,13 @@ export default function RootLayout({
         <a href="#main-content" className="skip">
           Skip to main content
         </a>
+        <div className="intro" aria-hidden="true">
+          <p>
+            Teuku Fazariz Basya <span>Portfolio</span>
+          </p>
+        </div>
+        <Grain />
+        <div className="frame" aria-hidden="true" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -71,7 +71,7 @@ export default function RootLayout({
               "@id": "https://teukufazariz.vercel.app/#person",
               name: "Teuku Fazariz Basya",
               url: "https://teukufazariz.vercel.app",
-              jobTitle: "iOS Developer",
+              jobTitle: "DevOps Engineer",
               sameAs: [
                 "https://www.linkedin.com/in/teukufazarizbasya/",
                 "https://github.com/teukufazariz",

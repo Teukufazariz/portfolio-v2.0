@@ -33,20 +33,139 @@ export interface Experience {
   projects: Project[];
 }
 
+// Every claim here is checked against ~/Riz/archive (see each chapter's "Don't claim" list) before it goes in.
 export const experiences: Experience[] = [
   {
-      title: "Apple Developer Academy",
-      role: "iOS Developer",
-      start: "2025-03",
-      end: "2025-12",
-      description:
-        "A 10 months project-based program focused on building production-quality iOS and macOS applications. Worked in multidisciplinary teams to design, implement, and iterate on real-world products under tight timelines, user feedback, and technical constraints.",
-      achievements: [
-        "Built and shipped multiple iOS and macOS applications using SwiftUI, UIKit, and native Apple frameworks",
-        "Applied Challenge-Based Learning (CBL) through rapid prototyping, user validation, and iterative refinement",
-        "Collaborated in cross-functional teams with designers and engineers using Agile/Scrum workflows",
-        "Maintained code quality through testing, linting, and architectural consistency across projects",
-        "Presented product demos and technical decisions to mentors and peers, incorporating feedback into subsequent iterations"
+    title: "Apple Developer Institute for DevOps",
+    role: "DevOps Engineer",
+    start: "2026-03",
+    end: "2026-11", // the capstone is planned to end on 27 Nov 2026
+    description:
+      "A challenge-based DevOps program run by S-Quantum Engine in Jakarta: group challenges on AWS, then a capstone at a real company.",
+    achievements: [
+      "Moved from Bash deployments on two EC2 instances to CI/CD across three environments, Terraform, and Kubernetes on Amazon EKS with GitOps",
+      "Wrote a post-mortem of Slack's 12 May 2020 outage with a group of four",
+    ],
+    projects: [
+      {
+        title: "Nanovest developer portal",
+        slug: "nanovest-developer-portal",
+        tagline: "Shows each service's status in one place instead of five tools.",
+        platform: "Backstage on GKE",
+        role: "DevOps Engineer",
+        context: "Apple Developer Institute for DevOps",
+        start: "2026-09",
+        end: "2026-11",
+        description:
+          "With a team of four, building a Backstage developer portal at Nanovest so developers can look up about 50 services in one place instead of across Bitbucket, Jenkins, Argo CD, Datadog and GCP.",
+        longDescription: `Developers kept asking the DevOps team two questions: is my service healthy, and did this pipeline fail in the build or the deploy? The answers were spread across five tools, and none of them recorded who owns each service.
+
+        The portal is live internally on Nanovest's dev GKE cluster and deploys through Jenkins and Argo CD. It is the program's capstone and runs until late November 2026; no services are onboarded in production yet.`,
+        keyContributions: [
+          "Wrote the production app config: hostname, Postgres schema mode and Google sign-in",
+          "Switched the Bitbucket integration to an API token, wired its secrets, and fixed the Jenkins build's agent pod",
+          "Pointed the portal at Argo CD's in-cluster address so its links and data work from inside the cluster, and removed the demo data",
+          "On my own initiative, turned a teammate's first Datadog card into a tested Datadog module showing each service's metrics and monitors",
+        ],
+        technologies: ["Backstage", "TypeScript", "GKE", "Jenkins", "Argo CD", "Datadog", "Bitbucket"],
+        imageAlt: "Nanovest developer portal",
+      },
+      {
+        title: "PlanPal on Kubernetes",
+        slug: "planpal-kubernetes",
+        tagline: "A meeting-scheduler app moved onto Kubernetes and Amazon EKS.",
+        platform: "AWS EKS",
+        role: "DevOps Engineer",
+        context: "Apple Developer Institute for DevOps",
+        start: "2026-07",
+        end: "2026-09",
+        description:
+          "Took PlanPal's Rust API, NATS workers and Next.js web client from a local kind cluster to a kubeadm cluster on a Mac mini, then to Amazon EKS with GitOps and canary releases.",
+        longDescription: `In a group of three, each member built their own deployment of the same app; this is one of the three. CI never touches the cluster. GitLab CI builds an image, pushes it to Amazon ECR with a commit-SHA tag, and commits that tag to a Git repo that Argo CD watches.
+
+        Argo CD deploys the new tag through a Helm chart. Argo Rollouts replaces half the pods first and waits for a manual go-ahead before replacing the rest.`,
+        problem:
+          "On EC2 with Ansible, a crashed service stayed down until someone logged in to restart it, staging and production drifted apart, and idle servers kept costing money.",
+        solution:
+          "Kubernetes restarts failed pods and scales the API with a HorizontalPodAutoscaler. Git holds the desired state, and Argo CD keeps the cluster in line with it.",
+        keyContributions: [
+          "Wrote the Dockerfiles and ran the app on kind, then on a kubeadm cluster on VMs on the group's Mac mini",
+          "Set up the EKS platform: AWS Load Balancer Controller, ACM, External Secrets Operator, IRSA and EKS Pod Identity, and RDS",
+          "Wrote the Helm chart (HPA, PodDisruptionBudget, ExternalSecrets) and the Argo CD app-of-apps, with canary releases through Argo Rollouts: 50% first, then a manual go-ahead",
+          "Built the delivery half of GitLab CI: an in-cluster GitLab Runner with an S3 cache, the image build, the push to ECR, and tag promotion to Git. 10 promotions reached production in five days",
+          "Cut the cold backend pipeline from 47:24 to 18:00 by merging the debug test build and the release build into one job, so about 590 Rust crates compile once, with four parallel compile jobs on a spot t3.xlarge. Cut the frontend pipeline from 4:11 to 1:18",
+          "Moved the CI node to spot instances ($38 to $22 a month)",
+          "Under a 25-user k6 login test on EKS, the HPA scaled the API from 2 to 5 pods with 0 restarts",
+        ],
+        technologies: ["Docker", "Kubernetes", "kind", "kubeadm", "Amazon EKS", "Helm", "Argo CD", "Argo Rollouts", "GitLab CI", "Amazon ECR", "k6"],
+        image: "/projects/PlanPal-EKS.jpg",
+        imageAlt: "My AWS architecture for PlanPal: EKS across three availability zones, a spot CI node group, RDS, ECR and Secrets Manager",
+      },
+      {
+        title: "PlanPal infrastructure as code",
+        slug: "planpal-iac",
+        tagline: "Terraform, Ansible and Packer for a meeting-scheduler app on AWS.",
+        platform: "AWS",
+        role: "DevOps Engineer",
+        context: "Apple Developer Institute for DevOps",
+        start: "2026-06",
+        end: "2026-07",
+        description:
+          "With a team of three, defined the AWS infrastructure for PlanPal, an AI meeting scheduler with a Rust backend, a Next.js web client and an iOS app, in Terraform, Ansible and Packer.",
+        longDescription: `Infrastructure changes went through pull requests: Atlantis ran Terraform plan and apply, Packer built the server images, and Ansible configured them. The images carry no secrets, and each instance fetches or generates its own when it first boots.
+
+        My part was the data tier, the observability stack and iOS CI. Teammates built the bootstrap stack, networking, the edge layer and the deploy pipelines.`,
+        keyContributions: [
+          "Wrote the Terraform RDS module and the staging and production databases (encrypted storage, 7-day backups, Multi-AZ and deletion protection in production), and wired in ElastiCache",
+          "Wrote the first security-group module, the Route 53 zones and the lookup of the existing VPC",
+          "Wrote seven Ansible roles (Grafana, Grafana Alloy, Prometheus, Loki, Tempo, a NATS exporter and OpenVPN) and the Packer templates for the Grafana and OpenVPN images",
+          "Covered those pieces with Terraform tests and Python template tests",
+          "Set up iOS CI: per-environment build settings, an Xcode Cloud staging workflow, SwiftLint, 91 XCTest methods and a local 80% coverage check",
+        ],
+        technologies: ["Terraform", "Ansible", "Packer", "Atlantis", "Amazon RDS", "Amazon ElastiCache", "Route 53", "Grafana", "Prometheus", "Loki", "Tempo", "Xcode Cloud"],
+        imageAlt: "PlanPal infrastructure on AWS",
+      },
+      {
+        title: "aform deployment and CI/CD",
+        slug: "aform",
+        tagline: "Scripted deploys and CI/CD for a Go form app on AWS.",
+        platform: "AWS EC2",
+        role: "DevOps Engineer",
+        context: "Apple Developer Institute for DevOps",
+        start: "2026-04",
+        end: "2026-06",
+        description:
+          "Took a Go form-builder app from Bash-scripted deployment on two EC2 instances to a Bitbucket pipeline that builds once and promotes the same binary through dev, staging and production.",
+        longDescription: `In Challenge 1, each member of a group of three deployed aform (Go, PostgreSQL, Redis, RabbitMQ) separately. In my deployment, the app and Nginx ran in a public subnet and the data services in a private subnet with no public IP. Services talked over internal TLS from a private CA, and secrets were read from Secrets Manager through an IAM role.
+
+        In Challenge 2, a new group of three ran aform across dev, staging and production, and I ran staging. The pipeline builds one arm64 binary, stores it in S3 by environment and version, and copies it to the next environment without rebuilding. The deploy script checks the new version's health and reverts if the check fails.`,
+        keyContributions: [
+          "Wrote seven Bash scripts that deploy aform onto two EC2 instances, with PostgreSQL, Redis and RabbitMQ in a private subnet, internal TLS, and secrets from Secrets Manager",
+          "Wrote most of the team's Bitbucket Pipelines file: golangci-lint, a SonarQube step, a 90% coverage gate, the build, the S3 upload and tag-based deploys",
+          "Extended the deploy script with a health check, automatic revert and S3 version pointers, and wrote the promote and rollback scripts and pipelines",
+          "Planned the unit-test coverage work and used Claude Code to write the Go tests (94.4% coverage)",
+          "Configured Grafana Alloy on staging to send metrics to the team's Grafana",
+          "Co-wrote the cost audit that found the proposal had left out the NAT Gateway ($52.54 a month)",
+          "Team results: the service held a p95 of 32 ms under 50 concurrent users in k6 tests, and the team reused my setup script to take a fresh EC2 instance to live HTTPS in about 9 minutes",
+        ],
+        technologies: ["Bash", "AWS EC2", "AWS Secrets Manager", "Amazon S3", "Nginx", "Bitbucket Pipelines", "golangci-lint", "SonarQube", "Grafana Alloy", "k6"],
+        image: "/projects/aform.png",
+        imageAlt: "The team's aform architecture: Nginx and the Go app in a public subnet, RabbitMQ, PostgreSQL and Redis in a private one",
+      },
+    ],
+  },
+  {
+    title: "Apple Developer Academy",
+    role: "iOS Developer",
+    start: "2025-03",
+    end: "2025-12",
+    description:
+      "A 10-month program at Apple Developer Academy @ BINUS where teams build iOS and macOS apps through Challenge-Based Learning, including one challenge with an industry partner.",
+    achievements: [
+      "Worked on four iOS and macOS apps in teams; RiSTOCK shipped to the App Store",
+      "Worked in teams of three to six with developers, designers and product managers",
+      "Trained a computer-vision model for an industry partner's proof of concept",
+      "Presented work to mentors, peers and outside reviewers, and changed it based on their feedback",
     ],
     projects: [
       {
@@ -60,27 +179,26 @@ export const experiences: Experience[] = [
         end: "2025-12",
         image: "/projects/RiSTOCK.jpg",
         description:
-          "Multiplatform inventory management app that helps business owners optimize stock opname.",
-        longDescription: `RiSTOCK is a macOS and iOS application designed to help business owners perform stock opname more effectively. 
-        
-        Using sales data from marketplaces like Shopee, Tokopedia and Lazada, the app provides recommendations on which items to prioritize. It ensures high-demand items are checked first, reducing the risk of stockouts and optimizing the restocking process.`,
-        
-        problem: "Business owners often overlook their best-selling items during manual stock opname, leading to critical stockouts. Without data-driven prioritization, they waste time counting low-value inventory while high-demand products run out unnoticed.",
-        
-        solution: "We developed a cross-platform system that analyzes imported sales data to generate a 'Priority Check' list. This guides the user to verify high-velocity items first, ensuring the stock that matters most is always available. We also provided the restock quantity based on sales trends.",
-        
+          "Mac and iPhone apps that turn marketplace sales exports into a list of which products to count and restock first.",
+        longDescription: `Sellers export their sales from Shopee, Tokopedia and Lazada and upload them in the Mac app. A Flask backend merges the files and gives each product a check priority (check now, check soon, check periodically) and a weekly minimum stock.
+
+        The iPhone app pairs with the Mac by scanning a QR code and is used in the storeroom to enter counted stock. Both apps are on the App Store. A team of five built them.`,
+        problem:
+          "Small online sellers sell on several marketplaces and count stock by hand. They can't tell which products to count first, so fast sellers run out.",
+        solution:
+          "The backend classifies products by sales volume and how much sales vary, then sets a check priority and a weekly minimum stock for each. The Mac app shows the ranked list, and the iPhone app records counts on the shop floor.",
         keyContributions: [
-          "Implemented the CSV upload entry point on macOS to parse external marketplace data",
-          "Built the tutorial system and custom UI components (Steppers) for the macOS",
-          "In charge of developing and implementing macOS and iOS components such as stock input fields.",
-          "Developed the authentication backend endpoint to support client applications"
+          "Built the macOS onboarding flow that shows sellers how to export their Shopee, Tokopedia and Lazada sales files, uploads them, and starts the backend analysis",
+          "Built the onboarding tutorials, the three-step progress stepper, and the re-upload flow for stale data on macOS",
+          "Built the iPhone stock-input sheet (press and hold to step by 10, negative adjustments, saves to the API) and the stock fields on the macOS product detail page",
+          "Built the iPhone main screen's summary cards and landing state, with Reduce Motion support",
+          "Built the backend's email/password auth endpoints (Flask, bcrypt, server-side sessions) with unit tests; the shipped apps pair by device ID instead",
         ],
         technologies: ["SwiftUI", "UIKit", "AppKit", "Flask", "MySQL"],
         imageAlt: "RiSTOCK inventory dashboard",
         githubUrl: "https://github.com/ristock-id",
         appStoreUrl: "https://apps.apple.com/id/app/ristock-always-in-stock/id6755036106?mt=12",
       },
-
       {
         title: "COCO.CO",
         slug: "coco-co",
@@ -89,53 +207,80 @@ export const experiences: Experience[] = [
         role: "iOS Developer",
         context: "Apple Developer Academy",
         start: "2025-08",
-        end: "2025-09",
+        end: "2025-08",
         image: "/projects/Coco.jpg",
         description:
-          "Snorkeling trip booking app enabling groups to collaborate in real-time.",
-        longDescription: `COCO.CO is an iOS application that streamlines the booking process for snorkeling trips. 
-        
-        Unlike standard travel apps, it focuses on group dynamics, allowing users to create joint trips, vote on packages, and manage participant details in a single shared flow. The app supports solo travelers but shines in scaling user acquisition through group invites.`,
-        
-        problem: "Planning group snorkeling trips is fragmented; users struggle to coordinate destinations, handle payments, and manage passenger manifests across chat apps and booking platforms. This friction often causes potential bookings to fall through.",
-        
-        solution: "We engineered a collaborative booking flow where users can invite friends to a shared 'Trip Lobby.' The app syncs choices in real-time and generates a printable PDF itinerary for offline use, ensuring everyone is aligned from booking to diving.",
-        
+          "Group trip planning added to an existing snorkeling-booking app: a planner creates a trip, adds friends, and the group votes on packages before booking.",
+        longDescription: `COCO.CO was an existing Academy iOS app for booking snorkeling trips. In a three-week challenge, our team of six added group trip planning to it.
+
+        The brief ruled out multi-user features, so the group runs on one phone: members come from a fixed list and votes stay on the device. The team expected group planning to bring in new users, but this was never measured.`,
+        problem:
+          "When friends plan a snorkeling trip, the planner answers the same questions again and again, and the group argues over which activities to pick. Plans often stall in the group chat.",
+        solution:
+          "A group trip page where the planner sets trip details and members, the group votes on packages, and the planner books the chosen one. The booked trip appears in My Trip and can be shared as a screenshot with a summary.",
         keyContributions: [
-          "In charge of developing and implementing the group booking flow and user invitation system",
-          "Implemented PDF generation to convert SwiftUI views into printable itineraries",
-          "Adhere to code quality standards using SwiftLint and rigorous Unit Testing",
+          "Built the group trip plan page: trip details, members, package voting and Book Now",
+          "Added an edit mode that reopens the group form to change a plan",
+          "Built the booking confirmation and success popups, and the group booking that appears in My Trip",
+          "Built the Solo/Group choice at Create Trip, the invite popup UI and the share-trip action",
+          "Prototyped exporting a trip as an image by rendering UIKit views off-screen (not merged)",
         ],
-        technologies: ["SwiftUI", "UIKit", "Swift Testing"],
+        technologies: ["SwiftUI", "UIKit"],
         imageAlt: "COCO.CO booking interface",
+      },
+      {
+        title: "Nusa Indah",
+        slug: "nusa-indah",
+        tagline: "Tells buses from other vehicles at toll gates.",
+        platform: "Python (Colab)",
+        role: "ML Developer",
+        context: "Apple Developer Academy",
+        start: "2025-07",
+        end: "2025-07",
+        description:
+          "Proof of concept for classifying vehicles automatically at hybrid toll gates, using a YOLOv12n model that tells buses from other vehicles.",
+        longDescription: `At hybrid toll gates, an operator still picks each vehicle's toll class by hand. In the Industry Partnership Challenge with a toll-road company, our team proposed laser sensors that measure tire width as the axles pass. A camera checks for buses first, because a bus pays Class I whatever its axle count.
+
+        No app was built: the deliverable was a concept and a technical proof of concept. The camera model ran on recorded toll video. Teammates built the sensor rig separately, and the two weren't connected.`,
+        problem:
+          "Operators at hybrid toll gates classify vehicles by hand, so accuracy depends on their concentration, and mistakes can delay payment.",
+        solution:
+          "A camera first answers one question: is it a bus? If yes, the vehicle is Class I. If not, two laser sensors measure tire widths and count axles to set the class.",
+        keyContributions: [
+          "Trained a YOLOv12n bus/no-bus detector in Colab on a Roboflow vehicle dataset",
+          "Compared three YOLOv12n models on toll-camera images; the one trained on general traffic images didn't carry over, so the team used one trained on toll-camera frames",
+          "Ran the toll-camera model on recorded toll video, with a hook where a no-bus detection would switch on the tire sensors",
+        ],
+        technologies: ["Python", "YOLOv12", "Roboflow", "Google Colab", "OpenCV"],
+        imageAlt: "Nusa Indah vehicle classification proof of concept",
       },
       {
         title: "PercaTalk",
         slug: "percatalk",
-        tagline: "Scores how you speak, using on-device ML.",
+        tagline: "Scores a practice speech on script accuracy and tone.",
         platform: "macOS",
         role: "macOS Developer",
         context: "Apple Developer Academy",
-        start: "2025-05",
+        start: "2025-06",
         end: "2025-06",
         image: "/projects/PercaTalk.jpg",
         description:
-          "AI-powered speech training tool that analyzes vocal delivery and provides on-device feedback.",
-        longDescription: `PercaTalk is a native macOS application designed to reduce public speaking anxiety. 
-        
-        Using on device machine learning, it analyzes a user's speech patterns focusing on emotion, pacing, and clarity without ever uploading audio to the cloud. It provides a safe, private environment for users to practice and improve their delivery.`,
-        
-        problem: "Improving public speaking is difficult without a human coach. Users often lack self-awareness regarding their emotional tone or pacing, and recording themselves feels unstructured and unhelpful without objective metrics.",
-        
-        solution: "We utilized CoreML and AVFoundation to build an offline audio analysis engine. The app records speech, classifies emotional delivery in real-time, and generates a scoring report to give users immediate, actionable feedback.",
-        
+          "macOS app that records you reading a script, then scores how closely you followed it and rates the tone of your voice.",
+        longDescription: `You read a script from an on-screen prompter while the Mac records video. When you stop, the app transcribes the recording and compares it with the script to give a fluency score. An on-device Core ML classifier rates your tone of voice across six emotions.
+
+        A six-person team built it in the three-week Machine Learning Challenge. Each recording is saved with its title and score, so past takes appear on the home screen.`,
+        problem:
+          "People who present and sell products want to persuade with confidence, but after a practice run they can't tell whether it went well.",
+        solution:
+          "After each take, the app shows a fluency score with missed and extra words, and a breakdown of the emotions in your voice with the main one explained. Emotion analysis runs on the Mac with Core ML.",
         keyContributions: [
-          "Integrated CoreML audio classification models for emotion detection",
-          "Implemented local data persistence with SwiftData to track user progress",
-          "Built the audio recording and playback pipeline using AVFoundation",
-          "Implementing the design for the video recording and scoring interface",
+          "Created the Xcode project and built the recording screen: camera and microphone capture to a video file with AVFoundation, a countdown, and playback",
+          "Built speech transcription with the Speech framework and an F1 fluency score that compares the transcript with the script",
+          "Built the word-highlighting prompter that scrolls through the script and ends the take",
+          "Moved the Core ML emotion model (trained by a teammate) off the main thread, averaged its output across audio windows, and connected the results to the Tone tab",
+          "Built local progress tracking: recordings on disk, titles and scores in UserDefaults, and a history list on the home screen",
         ],
-        technologies: ["SwiftUI", "CoreML", "AVFoundation", "SwiftData"],
+        technologies: ["SwiftUI", "Core ML", "AVFoundation", "Speech"],
         imageAlt: "PercaTalk speech analysis interface",
         githubUrl: "https://github.com/reinhart-c/project-kevin-speech-trainer",
       },
@@ -147,23 +292,24 @@ export const experiences: Experience[] = [
         role: "iOS Developer",
         context: "Apple Developer Academy",
         start: "2025-03",
-        end: "2025-04",
+        end: "2025-05",
         image: "/projects/Swifter.png",
         description:
-          "Smart jogging planner that integrates with Apple Calendar to automatically schedule jogs.",
-        longDescription: `Swifter is an intelligent routine planner that removes the mental load of scheduling exercise.
-        
-        Instead of forcing users to manually set times, Swifter reads the user's existing calendar events and identifies optimal time slots for jogging. It adapts to the user's changing schedule, ensuring fitness goals are met without conflicting with work or social commitments.`,
-        
-        problem: "Many people fail to maintain a jogging routine because they struggle to find time in their busy schedules. Manual planning is tedious, and rigid fitness apps don't account for fluctuating daily commitments.",
-        
-        solution: "We leveraged EventKit to scan the user's real-time availability. The app algorithmically inserts jogging sessions into free time slots and persists workout history locally, creating a friction-free fitness plan.",
-        
+          "iPhone app that finds a free slot in your Apple Calendar and adds your next jog there, with warm-up and cool-down.",
+        longDescription: `You set your jog length, warm-up and cool-down, preferred days and times, and a goal such as three jogs between two dates. Swifter reads your calendar through EventKit, finds the first free slot that fits, and adds the jog as calendar events. After each jog it plans the next one, and you can re-plan with one tap when your day changes.
+
+        A team of three built it in the Core Challenge. The linked fork adds Siri and Shortcuts support from the Experience Challenge.`,
+        problem:
+          "People who jog to clear their head have to fit runs around changing workloads, and re-planning each jog in a calendar takes extra effort.",
+        solution:
+          "Swifter uses EventKit to find the first free slot that matches your preferred days and times and writes the jog into your calendar. Sessions and goal progress are saved with SwiftData.",
         keyContributions: [
-          "Implementing the user onboarding flow to capture fitness goals and constraints",
-          "In charge of developing the calendar page, integrating EventKit for real-time availability",
+          "Built the Calendar tab: reads events through EventKit and shows them on a month grid and a zoomable day timeline",
+          "Built rescheduling from the calendar: moving a jog also moves its warm-up and cool-down, and the app warns when the new date falls outside the goal period",
+          "Built the preferences data model and the first SwiftData save for onboarding, and connected the Edit Preferences and Edit Goal screens to SwiftData",
+          "Added Siri and Shortcuts support in a personal fork: five App Intents in an extension that edit jog preferences in a SwiftData store shared with the app through an App Group",
         ],
-        technologies: ["SwiftUI", "SwiftData", "EventKit"],
+        technologies: ["SwiftUI", "SwiftData", "EventKit", "App Intents"],
         imageAlt: "Swifter workout schedule",
         githubUrl: "https://github.com/teukufazariz/swifter",
       },
@@ -175,11 +321,11 @@ export const experiences: Experience[] = [
     start: "2025-01",
     end: "2025-07",
     description:
-      "Developed responsive wedding invitation platforms with modern UI/UX and integrated guest management systems.",
+      "Built wedding invitation templates and a venue check-in dashboard for Minyma, the company's digital invitation product.",
     achievements: [
-      "Developed responsive wedding websites using React.js, Tailwind CSS, and REST APIs",
-      "Built QR code-based guest management system enabling real-time attendance tracking",
-      "Collaborated with design and backend teams ensuring seamless user experience across all devices",
+      "Built a client wedding invitation and the company's first template in Next.js and Tailwind CSS",
+      "Built the QR scanner and API layer of the venue check-in dashboard",
+      "Built screens from the UI/UX team's Figma designs and agreed the API fields with the backend developer",
     ],
     projects: [
       {
@@ -193,20 +339,19 @@ export const experiences: Experience[] = [
         end: "2025-07",
         image: "/projects/Minymablur.jpg",
         description:
-          "A Digital wedding invitation featuring responsive invitations and a QR-based check-in system.",
-        longDescription: `A digital wedding invitation platform designed to modernize the wedding experience for couples and guests.
-        
-        The project involved building bespoke invitation and a backend-integrated guest management tool. The system handles everything from initial RSVP collection to physical attendance tracking on the big day.`,
+          "A client's wedding invitation site with phone-number RSVP and a QR scanner that checks guests in at the venue.",
+        longDescription: `Minyma is PT. Jaya Santoso Teknologi's digital invitation product. Guests open one shared invitation link, RSVP with their phone number, and receive a QR code generated by the backend.
+
+        At the venue, ushers log in with an event key and scan guests' QR codes to check them in, and the guest list shows who has arrived. The scanner was finished after the internship ended, before the client's wedding in November 2025.`,
         keyContributions: [
-          "Developed responsive invitation pages using React.js and Tailwind CSS",
-          "Implemented the QR Code and scanning logic for guest verification",
-          "Optimized asset loading to ensure fast load times",
-          "Integrated REST APIs to sync RSVP data with the guest management dashboard"
+          "Built the company's first invitation template from scratch in Next.js and Tailwind CSS",
+          "Built the client invitation's RSVP flow: the phone number identifies the guest, returning guests get their existing QR, and repeated taps can't submit twice",
+          "Built the venue QR scanner (camera and jsQR) and the event-key login for ushers",
+          "Connected the RSVP form and the check-in dashboard to the company's REST API",
+          "Added a YouTube music player that starts when the guest opens the invitation",
         ],
-        technologies: ["React.js", "Tailwind CSS", "REST APIs"],
+        technologies: ["Next.js", "React", "Tailwind CSS", "REST APIs", "jsQR"],
         imageAlt: "Wedding invitation website",
-        // githubUrl: "https://github.com/teukufazariz/wedding-platform",
-        // demoUrl: "https://wedding-demo.example.com",
       },
     ],
   },
@@ -230,9 +375,10 @@ export function monthIndex(ym: string) {
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-/** "Sep–Dec 2025", or "Nov 2025–Feb 2026" across years. */
+/** "Jun 2025", "Sep–Dec 2025", or "Nov 2025–Feb 2026" across years. */
 export function formatRange(start: string, end: string) {
   const [ys, ms] = parse(start), [ye, me] = parse(end);
+  if (start === end) return `${MONTHS[ms - 1]} ${ys}`;
   return ys === ye
     ? `${MONTHS[ms - 1]}–${MONTHS[me - 1]} ${ye}`
     : `${MONTHS[ms - 1]} ${ys}–${MONTHS[me - 1]} ${ye}`;

@@ -17,6 +17,11 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
   );
 }
 
+// On the full page a plain link reloads, so the sheet route (src/app/@modal) doesn't intercept it.
+function PagerLink({ inSheet, ...props }: React.ComponentProps<"a"> & { href: string; inSheet: boolean }) {
+  return inSheet ? <Link {...props} replace scroll={false} /> : <a {...props} />;
+}
+
 export default function CaseStudy({ project: p, inSheet = false }: CaseStudyProps) {
   const i = allProjects.indexOf(p);
   const earlier = allProjects[i + 1];
@@ -119,16 +124,16 @@ export default function CaseStudy({ project: p, inSheet = false }: CaseStudyProp
 
       <nav className="pager" aria-label="More projects">
         {earlier && (
-          <Link href={`/projects/${earlier.slug}`} replace={inSheet} scroll={!inSheet} data-pager="prev">
+          <PagerLink inSheet={inSheet} href={`/projects/${earlier.slug}`} data-pager="prev">
             <span className="cap muted">Earlier</span>
             <span className="pname">{earlier.title}</span>
-          </Link>
+          </PagerLink>
         )}
         {later && (
-          <Link className="next" href={`/projects/${later.slug}`} replace={inSheet} scroll={!inSheet} data-pager="next">
+          <PagerLink inSheet={inSheet} className="next" href={`/projects/${later.slug}`} data-pager="next">
             <span className="cap muted">Later</span>
             <span className="pname">{later.title}</span>
-          </Link>
+          </PagerLink>
         )}
       </nav>
     </article>
