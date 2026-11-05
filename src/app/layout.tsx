@@ -44,10 +44,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Before first paint: apply the saved theme so nothing flashes, and play the intro once per visit */}
+        {/* Before first paint: apply the saved theme so nothing flashes */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var d=document.documentElement;var t=localStorage.getItem("theme");if(t)d.dataset.theme=t;if(sessionStorage.getItem("intro"))d.classList.add("seen");else sessionStorage.setItem("intro","1")}catch(e){}`,
+            __html: `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`,
           }}
         />
       </head>
@@ -55,11 +55,6 @@ export default function RootLayout({
         <a href="#main-content" className="skip">
           Skip to main content
         </a>
-        <div className="intro" aria-hidden="true">
-          <p>
-            Teuku Fazariz Basya <span>Portfolio</span>
-          </p>
-        </div>
         <Grain />
         <div className="frame" aria-hidden="true" />
         <script

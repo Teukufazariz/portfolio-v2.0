@@ -12,11 +12,6 @@ export default function Header() {
         <br />
         DevOps engineer
       </p>
-      <p>
-        Open to DevOps, platform,
-        <br />
-        cloud and SRE roles
-      </p>
       <ul className="nav">
         <li>
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume (PDF)</a>
@@ -27,11 +22,11 @@ export default function Header() {
         <li>
           <a href="https://github.com/teukufazariz" target="_blank" rel="noopener noreferrer">GitHub</a>
         </li>
-        <li>
-          <Modes />
-        </li>
       </ul>
-      <Clock />
+      <div className="time">
+        <Clock />
+        <Modes />
+      </div>
     </header>
   );
 }

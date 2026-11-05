@@ -39,7 +39,19 @@ export default function CaseStudy({ project: p, inSheet = false }: CaseStudyProp
         <h1 className="case-title" id="case-title" tabIndex={-1}>
           {p.title}
         </h1>
-        <p className="lead">{p.description}</p>
+        <p className="lead">
+          <b>{p.tagline}</b> {p.description}
+        </p>
+        {p.pipeline && (
+          <ol className="flow" aria-label="Delivery path">
+            {p.pipeline.map((step) => (
+              <li key={step}>
+                {/* narrow boxes: keep hyphenated words ("go-ahead", "commit-SHA") whole */}
+                {step.split(/(\S+-\S+)/).map((part, i) => (i % 2 ? <span key={i} style={{ whiteSpace: "nowrap" }}>{part}</span> : part))}
+              </li>
+            ))}
+          </ol>
+        )}
       </header>
 
       <div className="grid case-body section">
@@ -114,6 +126,15 @@ export default function CaseStudy({ project: p, inSheet = false }: CaseStudyProp
             <Block title="What I built">
               <ul className="dash">
                 {p.keyContributions.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </Block>
+          )}
+          {p.tradeoffs && (
+            <Block title="Trade-offs and known gaps">
+              <ul className="dash">
+                {p.tradeoffs.map((t) => (
                   <li key={t}>{t}</li>
                 ))}
               </ul>

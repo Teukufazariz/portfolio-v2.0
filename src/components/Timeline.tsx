@@ -50,11 +50,18 @@ interface TimelineProps {
  */
 export default function Timeline({ rows, startYear, startMonth, months, initial }: TimelineProps) {
   const bars = rows.filter((r): r is TimelineBar => r.kind === "bar");
-  const [selected, setSelected] = useState(initial);
+  // The bar whose project fills the panel gets an ink outline; red is only for the bar under the pointer or focus.
+  const [selected, setSelected] = useState<string | null>(null);
   const [now, setNow] = useState<{ x: number; month: number } | null>(null);
   const [fit, setFit] = useState<Record<string, string>>({});
   const wrap = useRef<HTMLDivElement>(null);
-  const shown = bars.find((b) => b.slug === selected) ?? bars[0];
+  const shown = bars.find((b) => b.slug === (selected ?? initial)) ?? bars[0];
+
+  // Newest at the top, on the grid and in the phone list alike: lanes in reverse, each lane's title first,
+  // then its projects in reverse. Time still runs left to right, so the bars climb toward "Now".
+  const groups: (TimelineLane | TimelineBar)[][] = [];
+  rows.forEach((r) => (r.kind === "lane" ? groups.push([r]) : groups.at(-1)?.push(r)));
+  const listed = groups.reverse().flatMap(([lane, ...projects]) => [lane, ...projects.reverse()]);
 
   // "Now" depends on the visitor's clock, so it is placed after hydration, never at build time.
   useEffect(() => {
@@ -65,20 +72,19 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
     if (x >= 0 && x < months) setNow({ x: x / months, month: index });
   }, [startYear, startMonth, months]);
 
-  // A label that does not fit inside its bar moves to the right of it, or to the left near the end of the grid.
+  // Every label sits outside its bar, on the left, so none crosses the Now line.
+  // A bar that starts too near the grid's left edge (the first months) gets its label on the right instead.
   useLayoutEffect(() => {
     const el = wrap.current;
     if (!el) return;
     const measure = () => {
       const next: Record<string, string> = {};
-      const end = el.getBoundingClientRect().right;
+      const start = el.getBoundingClientRect().left;
       el.querySelectorAll<HTMLAnchorElement>(".bar").forEach((bar) => {
         const label = bar.querySelector<HTMLElement>(".lbl");
         if (!label || !bar.dataset.slug) return;
-        const room = bar.clientWidth - label.scrollWidth - 20;
-        const right = end - bar.getBoundingClientRect().right;
-        next[bar.dataset.slug] =
-          room > 36 ? "roomy" : room >= 0 ? "" : right > label.scrollWidth + 20 ? "out" : "out left";
+        const left = bar.getBoundingClientRect().left - start;
+        next[bar.dataset.slug] = left > label.scrollWidth + 20 ? "out left" : "out";
       });
       setFit(next);
     };
@@ -88,7 +94,7 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
   }, []);
 
   return (
-    <section aria-labelledby="work-heading">
+    <section aria-labelledby="work-heading" data-shape="1">
       <h2 className="sr-only" id="work-heading">Work</h2>
       <div className="tl" ref={wrap} style={{ "--n": months } as React.CSSProperties}>
         <div className="months" aria-hidden="true">
@@ -105,7 +111,7 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
         </div>
 
         <ol className="rows" onMouseLeave={() => grain()}>
-          {rows.map((r, i) => {
+          {listed.map((r, i) => {
             const style = { gridColumn: `${r.start + 1} / ${r.end + 2}`, gridRow: i + 1, "--r": i } as React.CSSProperties;
             if (r.kind === "lane") {
               return (
@@ -119,9 +125,9 @@ export default function Timeline({ rows, startYear, startMonth, months, initial 
                 <Link
                   href={`/projects/${r.slug}`}
                   scroll={false}
-                  className={`bar ${fit[r.slug] ?? ""}`}
+                  className={`bar ${fit[r.slug] ?? "out left"}`}
                   data-slug={r.slug}
-                  data-selected={selected === r.slug || undefined}
+                  data-shown={shown.slug === r.slug || undefined}
                   style={{ "--r": i } as React.CSSProperties}
                   onMouseEnter={() => {
                     setSelected(r.slug);

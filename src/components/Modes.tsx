@@ -2,37 +2,46 @@
 
 import { useEffect, useState } from "react";
 
+type Theme = "auto" | "light" | "dark";
+const THEMES: [Theme, string][] = [
+  ["auto", "Auto"],
+  ["light", "Light"],
+  ["dark", "Dark"],
+];
+
 /**
- * Light and Dark switches, standing on the frame's left edge as on p5aholic.me.
- * The theme follows the system until the visitor picks one. The choice is stored under "theme"
- * and applied before first paint by the script in src/app/layout.tsx.
+ * Auto, Light or Dark under the clock, the current one in ink. Auto follows the system.
+ * A pick is stored under "theme" and applied before first paint by the script in src/app/layout.tsx.
+ * Native radios, so arrow keys and screen readers treat it like any one-of-three choice.
  */
 export default function Modes() {
-  const [dark, setDark] = useState(false);
+  const [theme, setTheme] = useState<Theme>("auto");
 
   useEffect(() => {
-    const media = matchMedia("(prefers-color-scheme: dark)");
-    const sync = () => {
-      const root = document.documentElement;
-      setDark(root.dataset.theme ? root.dataset.theme === "dark" : media.matches);
-    };
-    sync();
-    media.addEventListener("change", sync);
-    return () => media.removeEventListener("change", sync);
+    const saved = document.documentElement.dataset.theme;
+    if (saved === "light" || saved === "dark") setTheme(saved);
   }, []);
 
-  const pick = (theme: "light" | "dark") => {
-    document.documentElement.dataset.theme = theme;
+  const pick = (t: Theme) => {
+    const root = document.documentElement;
+    if (t === "auto") delete root.dataset.theme;
+    else root.dataset.theme = t;
     try {
-      localStorage.setItem("theme", theme);
+      if (t === "auto") localStorage.removeItem("theme");
+      else localStorage.setItem("theme", t);
     } catch {}
-    setDark(theme === "dark");
+    setTheme(t);
   };
 
   return (
-    <div className="modes" role="group" aria-label="Theme">
-      <button type="button" aria-pressed={!dark} onClick={() => pick("light")}>Light</button>
-      <button type="button" aria-pressed={dark} onClick={() => pick("dark")}>Dark</button>
-    </div>
+    <fieldset className="modes">
+      <legend className="sr-only">Theme</legend>
+      {THEMES.map(([t, label]) => (
+        <label key={t}>
+          <input className="sr-only" type="radio" name="theme" checked={theme === t} onChange={() => pick(t)} />
+          {label}
+        </label>
+      ))}
+    </fieldset>
   );
 }

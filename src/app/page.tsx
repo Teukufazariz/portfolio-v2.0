@@ -46,14 +46,13 @@ export default function Home() {
     <div className="page">
       <Header />
       <main id="main-content">
-        <section className="hero grid" aria-label="Introduction">
-          <h1 className="headline">I’m Riz. I get software from a git push to production.</h1>
+        <section className="hero grid" aria-label="Introduction" data-shape="0">
+          <h1 className="headline">I’m Riz, a DevOps engineer based in Jakarta.</h1>
           <p className="lead">
-            I cut a Rust backend’s cold CI pipeline from 47:24 to 18:00 and ran canary releases on Amazon EKS
-            through Argo CD and Argo Rollouts. With a team of four, I’m now building a Backstage developer portal at
-            Nanovest for about 50 services. Before DevOps I built iOS and Mac apps; one of them, RiSTOCK, is on the
-            App Store.
+            I work on CI/CD, Kubernetes and GitOps. Before DevOps I built iOS and Mac apps, and one of them, RiSTOCK,
+            is on the App Store.
           </p>
+          <p className="avail">Open to DevOps, platform, cloud and SRE roles. Remote, or on-site in Indonesia.</p>
         </section>
 
         <Timeline
@@ -64,7 +63,27 @@ export default function Home() {
           initial="planpal-kubernetes"
         />
 
-        <section className="section grid" aria-labelledby="tools-heading">
+        <section className="section grid" aria-labelledby="experience-heading" data-shape="2">
+          <h2 id="experience-heading">Experience</h2>
+          <div className="list">
+            {[...experiences].sort(byStart).reverse().map((exp) => (
+              <div className="entry" key={exp.title}>
+                <p className="when tab">{formatRange(exp.start, exp.end)}</p>
+                <div className="body">
+                  <h3>
+                    {exp.title}
+                    {/* nowrap, not U+2011: keeps "S-Quantum" in one piece and still findable with Ctrl+F */}
+                    {exp.host && <span style={{ whiteSpace: "nowrap" }}> @ {exp.host}</span>}
+                  </h3>
+                  <p className="muted">{exp.role}</p>
+                  <p>{exp.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="section grid" aria-labelledby="tools-heading" data-shape="3">
           <h2 id="tools-heading">Tools</h2>
           <dl className="list">
             {tools.map(([area, names]) => (
@@ -76,7 +95,7 @@ export default function Home() {
           </dl>
         </section>
 
-        <section className="section grid" aria-labelledby="education-heading">
+        <section className="section grid" aria-labelledby="education-heading" data-shape="4">
           <h2 id="education-heading">Education</h2>
           <div className="list">
             <div className="entry">
@@ -89,7 +108,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section grid" aria-labelledby="awards-heading">
+        <section className="section grid" aria-labelledby="awards-heading" data-shape="5">
           <h2 id="awards-heading">Awards</h2>
           <div className="list">
             <div className="entry">
@@ -97,6 +116,12 @@ export default function Home() {
               <div className="body">
                 <h3>Swift Student Challenge winner</h3>
                 <p className="muted">Apple. Groove Haven, a digital vinyl experience built with RealityKit.</p>
+                <p>
+                  <a href="/certificates/swift-student-challenge-2026.pdf" target="_blank" rel="noopener noreferrer">
+                    Certificate (PDF)<span aria-hidden="true"> ↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </p>
               </div>
             </div>
             <div className="entry">
@@ -104,6 +129,16 @@ export default function Home() {
               <div className="body">
                 <h3>IT Specialist: Networking</h3>
                 <p className="muted">Certiport certification.</p>
+                <p>
+                  <a
+                    href="https://www.credly.com/badges/c7262b99-53e7-499e-94d8-bea06c46843a/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Verify on Credly<span aria-hidden="true"> ↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </p>
               </div>
             </div>
           </div>

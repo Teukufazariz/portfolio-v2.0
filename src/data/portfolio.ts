@@ -13,6 +13,10 @@ export interface Project {
   problem?: string;
   solution?: string;
   keyContributions?: string[];
+  /** Shown after "What I built": limits I know about and what each choice cost */
+  tradeoffs?: string[];
+  /** Steps from commit to production, drawn as a row of boxes under the case study's summary */
+  pipeline?: string[];
   technologies: string[];
   image?: string;
   imageAlt: string;
@@ -24,6 +28,8 @@ export interface Project {
 
 export interface Experience {
   title: string;
+  /** Who runs it, as on the CV: shown as "title @ host" in the Experience section, left off the timeline to keep its labels short */
+  host?: string;
   role: string;
   /** "YYYY-MM", inclusive */
   start: string;
@@ -37,43 +43,46 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     title: "Apple Developer Institute for DevOps",
+    host: "S-Quantum Engine",
     role: "DevOps Engineer",
     start: "2026-03",
     end: "2026-11", // the capstone is planned to end on 27 Nov 2026
     description:
-      "A challenge-based DevOps program run by S-Quantum Engine in Jakarta: group challenges on AWS, then a capstone at a real company.",
+      "A DevOps program run by S-Quantum Engine where small groups work through startup scenarios with Challenge-Based Learning, going from scripted EC2 deployments to CI/CD, Terraform and Kubernetes on Amazon EKS, then a capstone at a real company.",
     achievements: [
       "Moved from Bash deployments on two EC2 instances to CI/CD across three environments, Terraform, and Kubernetes on Amazon EKS with GitOps",
       "Wrote a post-mortem of Slack's 12 May 2020 outage with a group of four",
     ],
     projects: [
       {
-        title: "Nanovest developer portal",
+        title: "Nanovest portal",
         slug: "nanovest-developer-portal",
-        tagline: "Shows each service's status in one place instead of five tools.",
-        platform: "Backstage on GKE",
+        tagline: "Live internally, deployed through GitOps.",
+        platform: "Backstage on Kubernetes",
         role: "DevOps Engineer",
         context: "Apple Developer Institute for DevOps",
         start: "2026-09",
         end: "2026-11",
         description:
-          "With a team of four, building a Backstage developer portal at Nanovest so developers can look up about 50 services in one place instead of across Bitbucket, Jenkins, Argo CD, Datadog and GCP.",
+          "With a team of four, building a Backstage developer portal at Nanovest so developers can look up the company's services in one place instead of across five separate tools.",
+        // Nanovest's stack, cluster, service count and hostnames are confidential: keep vendor names and numbers out of this entry.
         longDescription: `Developers kept asking the DevOps team two questions: is my service healthy, and did this pipeline fail in the build or the deploy? The answers were spread across five tools, and none of them recorded who owns each service.
 
-        The portal is live internally on Nanovest's dev GKE cluster and deploys through Jenkins and Argo CD. It is the program's capstone and runs until late November 2026; no services are onboarded in production yet.`,
+        The portal is live internally and deploys through GitOps. It is the program's capstone and runs until late November 2026; it is not yet in production use.`,
         keyContributions: [
-          "Wrote the production app config: hostname, Postgres schema mode and Google sign-in",
-          "Switched the Bitbucket integration to an API token, wired its secrets, and fixed the Jenkins build's agent pod",
-          "Pointed the portal at Argo CD's in-cluster address so its links and data work from inside the cluster, and removed the demo data",
-          "On my own initiative, turned a teammate's first Datadog card into a tested Datadog module showing each service's metrics and monitors",
+          "Wrote the production app config: hostname, database schema mode and company sign-in",
+          "Switched the source-control integration to an API token, wired its secrets, and fixed the image build's agent pod so it could be scheduled",
+          "Pointed the portal's GitOps integration at an in-cluster address so its links and data work from inside the cluster, and removed the demo data",
+          "On my own initiative, turned a teammate's first monitoring card into a tested module showing each service's metrics and alerts",
         ],
-        technologies: ["Backstage", "TypeScript", "GKE", "Jenkins", "Argo CD", "Datadog", "Bitbucket"],
-        imageAlt: "Nanovest developer portal",
+        technologies: ["Backstage", "TypeScript", "Kubernetes", "GitOps"],
+        image: "/projects/Nanovest.png",
+        imageAlt: "Nanovest developer portal, built on Backstage",
       },
       {
-        title: "PlanPal on Kubernetes",
+        title: "PlanPal on EKS",
         slug: "planpal-kubernetes",
-        tagline: "A meeting-scheduler app moved onto Kubernetes and Amazon EKS.",
+        tagline: "On Amazon EKS, the API scaled from 2 to 5 pods under a 25-user load test, with 0 restarts.",
         platform: "AWS EKS",
         role: "DevOps Engineer",
         context: "Apple Developer Institute for DevOps",
@@ -89,22 +98,38 @@ export const experiences: Experience[] = [
         solution:
           "Kubernetes restarts failed pods and scales the API with a HorizontalPodAutoscaler. Git holds the desired state, and Argo CD keeps the cluster in line with it.",
         keyContributions: [
+          "Cut the cold backend pipeline from 47:24 to 18:00 by merging the debug test build and the release build into one job, so about 590 Rust crates compile once, with four parallel compile jobs on a spot t3.xlarge. Cut the frontend pipeline from 4:11 to 1:18",
+          "Moved the CI node to spot instances ($38 to $22 a month)",
+          "Under a 25-user k6 login test on EKS, the HPA scaled the API from 2 to 5 pods with 0 restarts",
           "Wrote the Dockerfiles and ran the app on kind, then on a kubeadm cluster on VMs on the group's Mac mini",
           "Set up the EKS platform: AWS Load Balancer Controller, ACM, External Secrets Operator, IRSA and EKS Pod Identity, and RDS",
           "Wrote the Helm chart (HPA, PodDisruptionBudget, ExternalSecrets) and the Argo CD app-of-apps, with canary releases through Argo Rollouts: 50% first, then a manual go-ahead",
           "Built the delivery half of GitLab CI: an in-cluster GitLab Runner with an S3 cache, the image build, the push to ECR, and tag promotion to Git. 10 promotions reached production in five days",
-          "Cut the cold backend pipeline from 47:24 to 18:00 by merging the debug test build and the release build into one job, so about 590 Rust crates compile once, with four parallel compile jobs on a spot t3.xlarge. Cut the frontend pipeline from 4:11 to 1:18",
-          "Moved the CI node to spot instances ($38 to $22 a month)",
-          "Under a 25-user k6 login test on EKS, the HPA scaled the API from 2 to 5 pods with 0 restarts",
+        ],
+        // Checked against archive/devops/04-ch4-planpal-k8s-eks.md (§12, the canary notes and "Your answers"). Kaniko stays off on purpose.
+        tradeoffs: [
+          "The canary splits by pod count. Old and new pods sit behind one Service with no traffic router, so the 50% step means one new pod beside one old one, not a set share of requests",
+          "The readiness probe hits /api/v1/health, which reports a database outage as \"degraded\" but still returns 200, so the pod stays in service. The fix is to return 503 when a dependency check fails",
+          "The first 25-user k6 login test OOMKilled both API pods at their 256 Mi limit: each Argon2 password check allocates 19 MiB, and glibc kept those buffers instead of returning them. Setting MALLOC_MMAP_THRESHOLD_=131072 makes it hand them back after every login. Each login now pays to map and unmap 19 MiB, which is small next to Argon2's own CPU cost. The 2 to 5 pods result came after this fix",
+        ],
+        pipeline: [
+          "git push",
+          "GitLab CI builds the image",
+          "Amazon ECR, commit-SHA tag",
+          "Tag committed to Git",
+          "Argo CD syncs the Helm chart",
+          "Argo Rollouts: 50% of pods",
+          "Manual go-ahead",
+          "100%",
         ],
         technologies: ["Docker", "Kubernetes", "kind", "kubeadm", "Amazon EKS", "Helm", "Argo CD", "Argo Rollouts", "GitLab CI", "Amazon ECR", "k6"],
         image: "/projects/PlanPal-EKS.jpg",
         imageAlt: "My AWS architecture for PlanPal: EKS across three availability zones, a spot CI node group, RDS, ECR and Secrets Manager",
       },
       {
-        title: "PlanPal infrastructure as code",
+        title: "PlanPal IaC",
         slug: "planpal-iac",
-        tagline: "Terraform, Ansible and Packer for a meeting-scheduler app on AWS.",
+        tagline: "Production database on RDS with Multi-AZ, 7-day backups and deletion protection, plus the Grafana server image and its Ansible roles.",
         platform: "AWS",
         role: "DevOps Engineer",
         context: "Apple Developer Institute for DevOps",
@@ -123,12 +148,13 @@ export const experiences: Experience[] = [
           "Set up iOS CI: per-environment build settings, an Xcode Cloud staging workflow, SwiftLint, 91 XCTest methods and a local 80% coverage check",
         ],
         technologies: ["Terraform", "Ansible", "Packer", "Atlantis", "Amazon RDS", "Amazon ElastiCache", "Route 53", "Grafana", "Prometheus", "Loki", "Tempo", "Xcode Cloud"],
-        imageAlt: "PlanPal infrastructure on AWS",
+        image: "/projects/PlanPal-IaC.png",
+        imageAlt: "PlanPal on AWS, staging and production, with the parts I built marked in red: the RDS and ElastiCache data tier, the Grafana observability host and OpenVPN",
       },
       {
-        title: "aform deployment and CI/CD",
+        title: "aform CI/CD",
         slug: "aform",
-        tagline: "Scripted deploys and CI/CD for a Go form app on AWS.",
+        tagline: "One Go binary promoted from dev to production, reverted automatically if its health check fails.",
         platform: "AWS EC2",
         role: "DevOps Engineer",
         context: "Apple Developer Institute for DevOps",
@@ -140,13 +166,13 @@ export const experiences: Experience[] = [
 
         In Challenge 2, a new group of three ran aform across dev, staging and production, and I ran staging. The pipeline builds one arm64 binary, stores it in S3 by environment and version, and copies it to the next environment without rebuilding. The deploy script checks the new version's health and reverts if the check fails.`,
         keyContributions: [
+          "Team results: the service held a p95 of 32 ms under 50 concurrent users in k6 tests, and the team reused my setup script to take a fresh EC2 instance to live HTTPS in about 9 minutes",
           "Wrote seven Bash scripts that deploy aform onto two EC2 instances, with PostgreSQL, Redis and RabbitMQ in a private subnet, internal TLS, and secrets from Secrets Manager",
           "Wrote most of the team's Bitbucket Pipelines file: golangci-lint, a SonarQube step, a 90% coverage gate, the build, the S3 upload and tag-based deploys",
           "Extended the deploy script with a health check, automatic revert and S3 version pointers, and wrote the promote and rollback scripts and pipelines",
           "Planned the unit-test coverage work and used Claude Code to write the Go tests (94.4% coverage)",
           "Configured Grafana Alloy on staging to send metrics to the team's Grafana",
           "Co-wrote the cost audit that found the proposal had left out the NAT Gateway ($52.54 a month)",
-          "Team results: the service held a p95 of 32 ms under 50 concurrent users in k6 tests, and the team reused my setup script to take a fresh EC2 instance to live HTTPS in about 9 minutes",
         ],
         technologies: ["Bash", "AWS EC2", "AWS Secrets Manager", "Amazon S3", "Nginx", "Bitbucket Pipelines", "golangci-lint", "SonarQube", "Grafana Alloy", "k6"],
         image: "/projects/aform.png",
@@ -156,6 +182,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "Apple Developer Academy",
+    host: "BINUS",
     role: "iOS Developer",
     start: "2025-03",
     end: "2025-12",
@@ -164,7 +191,6 @@ export const experiences: Experience[] = [
     achievements: [
       "Worked on four iOS and macOS apps in teams; RiSTOCK shipped to the App Store",
       "Worked in teams of three to six with developers, designers and product managers",
-      "Trained a computer-vision model for an industry partner's proof of concept",
       "Presented work to mentors, peers and outside reviewers, and changed it based on their feedback",
     ],
     projects: [
@@ -229,32 +255,6 @@ export const experiences: Experience[] = [
         imageAlt: "COCO.CO booking interface",
       },
       {
-        title: "Nusa Indah",
-        slug: "nusa-indah",
-        tagline: "Tells buses from other vehicles at toll gates.",
-        platform: "Python (Colab)",
-        role: "ML Developer",
-        context: "Apple Developer Academy",
-        start: "2025-07",
-        end: "2025-07",
-        description:
-          "Proof of concept for classifying vehicles automatically at hybrid toll gates, using a YOLOv12n model that tells buses from other vehicles.",
-        longDescription: `At hybrid toll gates, an operator still picks each vehicle's toll class by hand. In the Industry Partnership Challenge with a toll-road company, our team proposed laser sensors that measure tire width as the axles pass. A camera checks for buses first, because a bus pays Class I whatever its axle count.
-
-        No app was built: the deliverable was a concept and a technical proof of concept. The camera model ran on recorded toll video. Teammates built the sensor rig separately, and the two weren't connected.`,
-        problem:
-          "Operators at hybrid toll gates classify vehicles by hand, so accuracy depends on their concentration, and mistakes can delay payment.",
-        solution:
-          "A camera first answers one question: is it a bus? If yes, the vehicle is Class I. If not, two laser sensors measure tire widths and count axles to set the class.",
-        keyContributions: [
-          "Trained a YOLOv12n bus/no-bus detector in Colab on a Roboflow vehicle dataset",
-          "Compared three YOLOv12n models on toll-camera images; the one trained on general traffic images didn't carry over, so the team used one trained on toll-camera frames",
-          "Ran the toll-camera model on recorded toll video, with a hook where a no-bus detection would switch on the tire sensors",
-        ],
-        technologies: ["Python", "YOLOv12", "Roboflow", "Google Colab", "OpenCV"],
-        imageAlt: "Nusa Indah vehicle classification proof of concept",
-      },
-      {
         title: "PercaTalk",
         slug: "percatalk",
         tagline: "Scores a practice speech on script accuracy and tone.",
@@ -317,7 +317,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "PT. Jaya Santoso Teknologi",
-    role: "Frontend Developer",
+    role: "Frontend Developer Intern",
     start: "2025-01",
     end: "2025-07",
     description:
@@ -329,17 +329,17 @@ export const experiences: Experience[] = [
     ],
     projects: [
       {
-        title: "Wedding Invitation",
+        title: "Minyma",
         slug: "wedding-invitation",
         tagline: "Wedding invitations with QR code check-in.",
         platform: "Web",
-        role: "Frontend Developer",
+        role: "Frontend Developer Intern",
         context: "PT. Jaya Santoso Teknologi",
         start: "2025-01",
         end: "2025-07",
         image: "/projects/Minymablur.jpg",
         description:
-          "A client's wedding invitation site with phone-number RSVP and a QR scanner that checks guests in at the venue.",
+          "Minyma is the company's digital wedding invitation product. I built its first template, a client's invitation with phone-number RSVP, and the QR scanner that checks guests in at the venue.",
         longDescription: `Minyma is PT. Jaya Santoso Teknologi's digital invitation product. Guests open one shared invitation link, RSVP with their phone number, and receive a QR code generated by the backend.
 
         At the venue, ushers log in with an event key and scan guests' QR codes to check them in, and the guest list shows who has arrived. The scanner was finished after the internship ended, before the client's wedding in November 2025.`,

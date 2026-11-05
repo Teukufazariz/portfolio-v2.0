@@ -4,7 +4,7 @@ const EMAIL = "teukufazarizbasya@gmail.com";
 
 export default function ContactSection() {
   return (
-    <section className="section grid" id="contact" aria-labelledby="contact-heading">
+    <section className="section grid" id="contact" aria-labelledby="contact-heading" data-shape="6">
       <h2 id="contact-heading">Contact</h2>
       <div className="content">
         <a className="email" href={`mailto:${EMAIL}`}>{EMAIL}</a>
