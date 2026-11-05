@@ -47,7 +47,7 @@ export default function Home() {
       <Header />
       <main id="main-content">
         <section className="hero grid" aria-label="Introduction" data-shape="0">
-          <h1 className="headline">I’m Riz, a DevOps engineer based in Jakarta.</h1>
+          <h1 className="headline">I’m Riz, a <b>DevOps</b> engineer based in Jakarta.</h1>
           <p className="lead">
             I work on CI/CD, Kubernetes and GitOps. Before DevOps I built iOS and Mac apps, and one of them, RiSTOCK,
             is on the App Store.
@@ -59,7 +59,6 @@ export default function Home() {
           rows={rows}
           startYear={startYear}
           startMonth={startMonth}
-          months={monthIndex(timeline.end) + 1}
           initial="planpal-kubernetes"
         />
 

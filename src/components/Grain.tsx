@@ -10,6 +10,7 @@ uniform vec2 r;
 uniform float t, m, dark;
 uniform float sa, sb, sk; // the section shape fading out, the one fading in, and how far (0–1)
 uniform float x; // which of the two pictures shows: 0 the first, 1 the second, between them a crossfade
+uniform float intro; // the entrance, 0 → 1 over the first 1.2 s
 uniform vec4 box0, box1;
 uniform float light0, light1;
 uniform vec3 ink;
@@ -37,9 +38,10 @@ float smin(float a, float b, float w) {
 // Returns (signed distance, scale); scale shrinks the noise and the rim for the small spheres.
 // 0 hero and 6 contact: the one big sphere. 1 timeline: 9 projects. 2 experience: 3 places.
 // 3 tools: 9 categories. 4 education: 1 degree. 5 awards: 2.
+// On a portrait screen the big sphere would sit under the text, so it shrinks into the lower right corner.
+vec2 center(float asp, float wide) { return mix(vec2(.3 * asp, -.38), vec2(.42 * asp, .06), wide); }
 vec2 shape(float id, vec2 p, float asp, float wide) {
-  // On a portrait screen the big sphere would sit under the text, so it shrinks into the lower right corner.
-  vec2 c = mix(vec2(.3 * asp, -.38), vec2(.42 * asp, .06), wide);
+  vec2 c = center(asp, wide);
   if (id < .5) return vec2(length(p - c) - mix(.36, .62, wide), 1.);
   if (id > 5.5) return vec2(length(p - c) - mix(.29, .5, wide), 1.);
   // The small ones share a stage: the right half on wide screens, a band along the bottom on portrait ones.
@@ -76,12 +78,16 @@ void main() {
   // The old and new section shapes, blended. Its edge breathes with slow noise and catches a bright rim.
   float asp = r.x / r.y;
   float wide = step(1., asp);
-  vec2 A = shape(sa, p, asp, wide), B = shape(sb, p, asp, wide);
+  // Entrance: the shape starts four times its size, so its dots cover the screen, and gathers in toward the sphere.
+  vec2 c = center(asp, wide);
+  vec2 g = c + (p - c) * (.25 + .75 * intro);
+  vec2 A = shape(sa, g, asp, wide), B = shape(sb, g, asp, wide);
   float e = sk; // linear: sk already eases out
   float sc = mix(A.y, B.y, e);
   // The wobble shrinks with the square of the scale, or it would be as big as the small spheres and melt them together.
   float d = mix(A.x, B.x, e) + (fbm(p * 1.8 / sc + vec2(t * .04, -t * .03)) - .5) * .3 * sc * sc;
   float form = smoothstep(.25 * sc, -.35 * sc, d) * fbm(p * 2.2 / sc - vec2(t * .03, t * .02)) * .45 + exp(-abs(d) * 14. / sc) * .75;
+  form = mix(.1, form, intro); // and from a thin, even scatter
 
   // The hovered project's picture, crossfading into the next one when the pointer moves to another bar.
   float shot = mix(pic(img0, box0, light0, px), pic(img1, box1, light1, px), smoothstep(0., 1., x));
@@ -130,7 +136,7 @@ export default function Grain() {
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
     const u = (name: string) => gl.getUniformLocation(prog, name);
-    const [uR, uT, uM, uDark, uInk, uX, uSa, uSb, uSk] = ["r", "t", "m", "dark", "ink", "x", "sa", "sb", "sk"].map(u);
+    const [uR, uT, uM, uDark, uInk, uX, uSa, uSb, uSk, uIntro] = ["r", "t", "m", "dark", "ink", "x", "sa", "sb", "sk", "intro"].map(u);
     const uLight = [u("light0"), u("light1")];
     const uBox = [u("box0"), u("box1")];
 
@@ -203,6 +209,9 @@ export default function Grain() {
       gl.uniform1f(uSa, sa);
       gl.uniform1f(uSb, sb);
       gl.uniform1f(uSk, sk);
+      // The entrance: 1.2 s, easing out (cubic). The text never waits for it. Reduced motion: the finished sphere.
+      const intro = still.matches ? 1 : 1 - (1 - Math.min(Math.max((now - start) / 1200, 0), 1)) ** 3;
+      gl.uniform1f(uIntro, intro);
 
       const img = want ? images.get(want) : undefined;
       if (img?.complete && !img.naturalWidth) want = null; // failed to load

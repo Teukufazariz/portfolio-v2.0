@@ -357,8 +357,8 @@ export const experiences: Experience[] = [
   },
 ];
 
-/** The months the home timeline covers, "YYYY-MM", inclusive. Extend `end` as time passes. */
-export const timeline = { start: "2025-01", end: "2026-12" };
+/** Where the home timeline starts counting months, "YYYY-MM". It grows a row per year on its own. */
+export const timeline = { start: "2025-01" };
 
 /** Newest first, in the order the experiences and projects are listed above. */
 export const allProjects = experiences.flatMap((exp) => exp.projects);

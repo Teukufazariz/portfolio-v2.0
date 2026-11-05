@@ -107,9 +107,10 @@ b, strong { font-weight: 700; }
 .hero .lead { grid-column: 1 / span 7; font-size: var(--t-lead); line-height: 1.3; }
 .avail { grid-column: 1 / span 7; } /* who you're open to work for, under the intro */
 
-/* Timeline: every project on one month grid, with a line for now */
+/* Timeline: every project on a month grid, one row of twelve months per year, with a line for now */
 .tl { position: relative; margin-top: 56px; }
-.months, .rows { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.tl + .tl { margin-top: 40px; }
+.months, .rows { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); }
 .months { font-size: var(--t-cap); color: var(--graphite); padding-bottom: 10px; }
 .months span { padding-left: 6px; }
 .months b { display: block; color: var(--ink); }
@@ -117,17 +118,16 @@ b, strong { font-weight: 700; }
 .rows {
   row-gap: 8px;
   background-image: linear-gradient(to right, var(--hair) 1px, transparent 1px);
-  background-size: calc(100% / var(--n)) 100%;
+  background-size: calc(100% / 12) 100%;
   border-right: 1px solid var(--hair);
 }
-.yearline { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ink); }
 .lane {
   align-self: end; padding-bottom: 6px; border-bottom: 2px solid var(--ink);
   font-size: var(--t-cap); white-space: nowrap; margin-top: 12px;
   animation: grow .7s var(--spring) backwards; animation-delay: calc(var(--r) * 70ms);
 }
 .bar {
-  position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; /* z-index: over the year and Now lines */
+  position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; /* z-index: over the Now line */
   height: 44px; padding-inline: 10px; background: var(--ink); color: var(--paper);
   text-decoration: none; white-space: nowrap; cursor: pointer; transition: scale .2s var(--spring);
   animation: grow .7s var(--spring) backwards; animation-delay: calc(var(--r) * 70ms);
@@ -142,7 +142,7 @@ b, strong { font-weight: 700; }
 .bar.out:hover .lbl, .bar.out:focus-visible .lbl { color: var(--signal); }
 .bar[data-shown] { outline: 1px solid var(--ink); outline-offset: 3px; }
 .bar .tag {
-  position: absolute; left: calc(100% + 12px); font-size: var(--t-cap); color: var(--signal);
+  margin-left: 12px; font-size: var(--t-cap); font-weight: 400; color: var(--signal);
   display: inline-flex; align-items: center; gap: 6px;
 }
 .bar .tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
@@ -271,7 +271,7 @@ html.sheet-in .sheet { transform: none; }
   .top > .time { grid-column: 1 / -1; }
   .hero { margin-top: 48px; }
   .hero .lead { font-size: 1.25rem; } /* 24px filled a phone's first screen with the intro */
-  .months, .now, .yearline, .detail { display: none; }
+  .months, .now, .detail { display: none; }
   .tl { margin-top: 40px; }
   .rows { display: block; background: none; border: 0; }
   .lane {
