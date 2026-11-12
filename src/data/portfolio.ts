@@ -58,24 +58,25 @@ export const experiences: Experience[] = [
         title: "Nanovest portal",
         slug: "nanovest-developer-portal",
         tagline: "Live internally, deployed through GitOps.",
-        platform: "Backstage on Kubernetes",
+        platform: "Backstage on GKE",
         role: "DevOps Engineer",
         context: "Apple Developer Institute for DevOps",
         start: "2026-09",
         end: "2026-11",
         description:
-          "With a team of four, building a Backstage developer portal at Nanovest so developers can look up the company's services in one place instead of across five separate tools.",
-        // Nanovest's stack, cluster, service count and hostnames are confidential: keep vendor names and numbers out of this entry.
-        longDescription: `Developers kept asking the DevOps team two questions: is my service healthy, and did this pipeline fail in the build or the deploy? The answers were spread across five tools, and none of them recorded who owns each service.
+          "With a team of four, building a Backstage developer portal at Nanovest that brings 41 services together from Bitbucket, Jenkins, Argo CD, Datadog and the GCP console.",
+        // Stack names and the 41-service count are allowed since 9–10 November 2026 (career-facts.md). Hostnames, cluster and VPN details, and incidents stay out.
+        longDescription: `Developers kept asking the DevOps team two questions: is my service healthy, and did this pipeline fail in the build or the deploy? The answers were spread across Bitbucket, Jenkins, Argo CD, Datadog and the GCP console, and none of them recorded who owns each service.
 
-        The portal is live internally and deploys through GitOps. It is the program's capstone and runs until late November 2026; it is not yet in production use.`,
+        The portal is live internally, used by 100% of the DevOps team, and deploys through GitOps: a Jenkins build, then Argo CD. It is the program's capstone and runs until late November 2026; it is not yet in production use.`,
         keyContributions: [
-          "Wrote the production app config: hostname, database schema mode and company sign-in",
-          "Switched the source-control integration to an API token, wired its secrets, and fixed the image build's agent pod so it could be scheduled",
-          "Pointed the portal's GitOps integration at an in-cluster address so its links and data work from inside the cluster, and removed the demo data",
-          "On my own initiative, turned a teammate's first monitoring card into a tested module showing each service's metrics and alerts",
+          "Built the Cloud SQL database view: instance CPU, memory, disk and connections, per-database rows and deadlocks, and query load and latency, with unit tests",
+          "Built the scheduled-jobs view for Kubernetes CronJobs and Cloud Scheduler jobs, with unit tests",
+          "On my own initiative, built the Datadog tab's request, error-rate and p99 latency graphs, endpoints table, error-tracking issues and recent traces, on top of a teammate's first monitors card",
+          "Moved Datadog calls behind an allowlisted backend route that answers only the portal's own requests and trims each response to the fields shown",
+          "Wrote the Jenkins build and the production app config, switched the Bitbucket integration to an API token, and pointed Argo CD at an in-cluster address",
         ],
-        technologies: ["Backstage", "TypeScript", "Kubernetes", "GitOps"],
+        technologies: ["Backstage", "GKE", "Cloud SQL", "Jenkins", "Argo CD", "Datadog"],
         image: "/projects/Nanovest.png",
         imageAlt: "Nanovest developer portal, built on Backstage",
       },

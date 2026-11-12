@@ -30,11 +30,11 @@ const [startYear, startMonth] = timeline.start.split("-").map(Number);
 
 // The Skills section of ~/Riz/Latex/CV/TeukuFazarizBasya_CV.tex. Keep the two in step.
 const tools = [
-  ["Cloud", "AWS (EC2, VPC, EKS, ECR, S3, IAM, RDS, ElastiCache, Route 53, Secrets Manager, CloudWatch), GCP (GKE)"],
+  ["Cloud", "AWS (EC2, VPC, EKS, ECR, S3, IAM, RDS, ElastiCache, Route 53, Secrets Manager, CloudWatch), GCP (GKE, Cloud SQL)"],
   ["Containers and Kubernetes", "Docker, Kubernetes (EKS, kubeadm, kind), Helm"],
   ["GitOps and CI/CD", "Argo CD, Argo Rollouts, GitLab CI, Bitbucket Pipelines, Jenkins, SonarQube"],
   ["Infrastructure as code", "Terraform, Ansible, Packer"],
-  ["Observability", "Grafana, Prometheus, Grafana Alloy, Datadog, k6"],
+  ["Observability", "Grafana, Prometheus, Grafana Alloy, Loki, Tempo, Datadog, k6"],
   ["Platform engineering", "Backstage"],
   ["Databases", "PostgreSQL, Redis"],
   ["Linux and networking", "Ubuntu, systemd, Nginx, DNS, TLS"],
