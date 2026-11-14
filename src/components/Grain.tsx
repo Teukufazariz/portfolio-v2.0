@@ -2,6 +2,10 @@
 
 import { useEffect, useRef } from "react";
 
+const CELL = 12; // side of one character cell, in CSS pixels
+// Lightest to densest is worked out at runtime from each glyph's ink, so the order here doesn't matter.
+const RAMP = ".:-+/×=%#@";
+
 const VERT = `attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
 
 const FRAG = `
@@ -15,6 +19,12 @@ uniform vec4 box0, box1;
 uniform float light0, light1;
 uniform vec3 ink;
 uniform sampler2D img0, img1;
+uniform float cell; // side of one character cell, in canvas pixels
+uniform float n; // glyphs in the ramp
+uniform vec3 ptr; // the mouse pointer: x, y in canvas pixels from the bottom left, and how present it is (0–1)
+uniform sampler2D glyphs; // the ramp, one square tile per glyph, lightest on the left
+uniform float live; // 1, or 0 under reduced motion: no churn, pulses, tears or sparks
+uniform vec3 signal; // the page's red
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 float noise(vec2 p) {
@@ -66,13 +76,31 @@ vec2 shape(float id, vec2 p, float asp, float wide) {
 // A mostly white image (a diagram) always draws its dark lines, or dark mode would show a solid slab.
 float pic(sampler2D img, vec4 box, float light, vec2 px) {
   vec2 q = (px - box.xy) / box.zw;
-  float l = dot(texture2D(img, vec2(q.x, 1. - q.y)).rgb, vec3(.299, .587, .114));
+  // Four taps a quarter cell out from the centre. A photo takes their average;
+  // a diagram keeps the densest one, or its thin lines would fall between the cells.
+  vec2 o = .25 * cell / box.zw;
+  float mean = 0., peak = 0.;
+  for (int i = 0; i < 4; i++) {
+    vec2 s = q + o * vec2(i < 2 ? -1. : 1., i == 0 || i == 2 ? -1. : 1.);
+    float l = dot(texture2D(img, vec2(s.x, 1. - s.y)).rgb, vec3(.299, .587, .114));
+    // A diagram's lines are thinner than a cell, so what is left of them after scaling down is amplified.
+    float v = min(mix(1. - l, l, dark * (1. - light)) * (1. + 2.5 * light), 1.);
+    mean += v * .25;
+    peak = max(peak, v);
+  }
   float edge = smoothstep(0., .06, min(min(q.x, 1. - q.x), min(q.y, 1. - q.y)) + (noise(px * .02) - .5) * .05);
-  return smoothstep(.05, .95, mix(1. - l, l, dark * (1. - light))) * edge;
+  return smoothstep(.05, .95, mix(mean, peak, light)) * edge;
 }
 
 void main() {
-  vec2 px = gl_FragCoord.xy;
+  // One character per cell: the density is worked out at the cell's centre.
+  // ponytail: every pixel of a cell repeats that work; render the density to a cell-sized target first if phones struggle.
+  vec2 id = floor(gl_FragCoord.xy / cell);
+  // A tear: about once a second a band three rows tall slips a few cells sideways for one tick, then snaps back.
+  float tick = floor(t * 9.);
+  float band = floor(id.y / 3.);
+  float tear = live * step(.997, hash(vec2(band, tick)));
+  vec2 px = (id + vec2(tear * (floor(hash(vec2(tick, band)) * 9.) - 4.), 0.) + .5) * cell;
   vec2 p = (px - .5 * r) / r.y;
 
   // The old and new section shapes, blended. Its edge breathes with slow noise and catches a bright rim.
@@ -87,25 +115,49 @@ void main() {
   // The wobble shrinks with the square of the scale, or it would be as big as the small spheres and melt them together.
   float d = mix(A.x, B.x, e) + (fbm(p * 1.8 / sc + vec2(t * .04, -t * .03)) - .5) * .3 * sc * sc;
   float form = smoothstep(.25 * sc, -.35 * sc, d) * fbm(p * 2.2 / sc - vec2(t * .03, t * .02)) * .45 + exp(-abs(d) * 14. / sc) * .75;
-  form = mix(.1, form, intro); // and from a thin, even scatter
+  form = mix(.2, form, intro); // and from a thin, even scatter
 
   // The hovered project's picture, crossfading into the next one when the pointer moves to another bar.
-  float shot = mix(pic(img0, box0, light0, px), pic(img1, box1, light1, px), smoothstep(0., 1., x));
-  float dens = mix(form, shot, smoothstep(0., 1., m));
-  // Each pixel lights with probability dens, reshuffled 24 times a second: film grain.
-  // Fainter on white (dark = 0), where dark dots behind body text read as noise.
-  float a = step(hash(px + mod(floor(t * 24.), 97.) * 17.31), dens * .8) * mix(.24, .38, wide) * mix(.6, 1., dark);
-  gl_FragColor = vec4(ink * a, a);
+  float shot = 0.;
+  if (m > 0.) shot = mix(pic(img0, box0, light0, px), pic(img1, box1, light1, px), smoothstep(0., 1., x));
+  // In a shape the faintest sixth of the range stays blank, so its inside is patches of type and not an even field.
+  // A picture keeps its whole range, dark areas as dots, and stops short of "@" so a white screen isn't one slab.
+  float ms = smoothstep(0., 1., m);
+  float body = (form - .15) * 1.5;
+  // Pulses: two sets of waves cross the shape at different speeds, so it never repeats on a beat.
+  float wave = sin(dot(p, vec2(3., 5.)) * 4. - t * 1.7) + sin(dot(p, vec2(-4., 2.)) * 3. + t * 1.1);
+  body += live * .07 * wave * smoothstep(-.05, .15, body);
+  float dens = mix(body, shot * .85, ms);
+  // The pointer carries a soft patch of characters with it, and thickens the ones it passes over.
+  float nr = ptr.z * (1. - smoothstep(0., 12. * cell, distance(px, ptr.xy)));
+  dens += nr * .25 * (.6 + .8 * noise(px * .01 + t * .3));
+  // Density picks the glyph: 0 is blank, 1 to n run from the lightest to the densest.
+  // Churn: each cell leans a little one way or the other and re-rolls on its own clock, one to seven times a second,
+  // so the type boils instead of sitting still. A picture churns less, to stay readable.
+  float roll = hash(id + floor(t * live * mix(1., 7., hash(id + 3.7)) + hash(id.yx) * 9.) * 1.37);
+  float k = floor(clamp(dens + (roll - .5) * mix(.24, .1, ms), 0., .999) * (n + 1.));
+  // Sparks: now and then a character flares red and scrambles for a tick. Many more of them near the pointer.
+  float red = live * step(.5, k) * step(1. - (.0015 + .04 * nr), hash(id + tick * 7.13));
+  red = max(red, tear * step(.5, k));
+  k = mix(k, 1. + floor(hash(id - tick) * n), red);
+  vec2 f = fract(gl_FragCoord.xy / cell);
+  float glyph = k < .5 ? 0. : texture2D(glyphs, vec2((k - 1. + f.x) / n, 1. - f.y)).a;
+  // Fainter on white (dark = 0), where dark characters behind body text read as noise.
+  // And fainter on a portrait screen, where the shape has nowhere to sit but under the text.
+  float a = glyph * mix(mix(.25, .5, wide) * mix(.6, 1., dark), .9, red);
+  gl_FragColor = vec4(mix(ink, signal, red) * a, a);
 }`;
 
 /**
- * Film grain behind the page, after Keita Yamada's p5aholic.me: a drifting sphere of dots.
+ * Characters behind the page, on the stage of Keita Yamada's p5aholic.me: a drifting sphere set in type.
  * As the visitor reaches each section marked with data-shape, the sphere morphs into that section's shape:
  * as many spheres as the section has items (9 projects, 3 places, 9 tool groups, 1 degree, 2 awards).
  * Hovering a project on the timeline (it fires a "grain" event with the image URL, or null)
  * dissolves the shape and re-forms the grain into that project's screenshot; moving to another bar
  * crossfades straight into the next screenshot.
- * It is one fragment shader, no particles: each pixel is lit with a probability equal to the local density.
+ * The mouse pointer carries a soft patch of characters with it.
+ * It is one fragment shader, no particles: the screen is a grid of cells, and each cell shows the glyph
+ * whose ink matches the local density, from "." to "@", drawn in the page's own typeface.
  */
 export default function Grain() {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -119,6 +171,7 @@ export default function Grain() {
       const s = gl.createShader(type)!;
       gl.shaderSource(s, src);
       gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(s));
       return s;
     };
     const prog = gl.createProgram()!;
@@ -136,7 +189,7 @@ export default function Grain() {
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
     const u = (name: string) => gl.getUniformLocation(prog, name);
-    const [uR, uT, uM, uDark, uInk, uX, uSa, uSb, uSk, uIntro] = ["r", "t", "m", "dark", "ink", "x", "sa", "sb", "sk", "intro"].map(u);
+    const [uR, uT, uM, uDark, uInk, uX, uSa, uSb, uSk, uIntro, uCell, uN, uPtr, uLive, uSignal] =["r", "t", "m", "dark", "ink", "x", "sa", "sb", "sk", "intro", "cell", "n", "ptr", "live", "signal"].map(u);
     const uLight = [u("light0"), u("light1")];
     const uBox = [u("box0"), u("box1")];
 
@@ -153,8 +206,8 @@ export default function Grain() {
       return sum / 64 / 255;
     };
 
-    // Two pictures, one per texture unit, so one can crossfade into the next.
-    for (const i of [0, 1]) {
+    // Two pictures, one per texture unit, so one can crossfade into the next. The third unit holds the glyphs.
+    for (const i of [0, 1, 2]) {
       gl.activeTexture(gl.TEXTURE0 + i);
       gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
       for (const [k, v] of [
@@ -164,9 +217,36 @@ export default function Grain() {
         [gl.TEXTURE_MAG_FILTER, gl.LINEAR],
       ]) gl.texParameteri(gl.TEXTURE_2D, k, v);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
-      gl.uniform1i(u(`img${i}`), i);
+      gl.uniform1i(u(i < 2 ? `img${i}` : "glyphs"), i);
     }
 
+    // The ramp as a strip of square tiles, each as big as a cell so a glyph maps to the screen 1:1.
+    // The glyphs are sorted by how much ink each one lays down in whatever font the visitor has.
+    const atlas = (tile: number) => {
+      const strip = Object.assign(document.createElement("canvas"), { width: tile * RAMP.length, height: tile });
+      const g = strip.getContext("2d", { willReadFrequently: true });
+      if (!g) return;
+      g.font = `700 ${tile * 0.9}px ${getComputedStyle(document.body).fontFamily}`;
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      g.fillStyle = "#fff";
+      const inked = [...RAMP].map((ch) => {
+        g.clearRect(0, 0, tile, tile);
+        g.fillText(ch, tile / 2, tile / 2);
+        const px = g.getImageData(0, 0, tile, tile).data;
+        let sum = 0;
+        for (let i = 3; i < px.length; i += 4) sum += px[i];
+        return [ch, sum] as const;
+      });
+      g.clearRect(0, 0, strip.width, tile);
+      inked.sort((a, b) => a[1] - b[1]).forEach(([ch], i) => g.fillText(ch, (i + 0.5) * tile, tile / 2));
+      gl.activeTexture(gl.TEXTURE2);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, strip);
+      gl.uniform1f(uCell, tile);
+      gl.uniform1f(uN, RAMP.length);
+    };
+
+    const small = Object.assign(document.createElement("canvas"), { width: 256 });
     const still = matchMedia("(prefers-reduced-motion: reduce)");
     const images = new Map<string, HTMLImageElement>();
     let want: string | null = null; // image the visitor is pointing at
@@ -179,6 +259,8 @@ export default function Grain() {
     let last = performance.now();
     const start = last;
     let [sa, sb, sk] = [0, 0, 1]; // see the shader
+    // The mouse pointer: where it is, where the patch of characters has got to, and how present it is.
+    const ptr = { tx: 0, ty: 0, x: 0, y: 0, want: 0, on: 0 };
 
     // The section being read: the last [data-shape] whose top has passed 40% of the screen
     // (any lower and the short Awards section takes over while Education is still being read),
@@ -221,7 +303,15 @@ export default function Grain() {
         const k = 1 - front;
         if (slots[k] !== want) {
           gl.activeTexture(gl.TEXTURE0 + k);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+          // Scaled down first, to a few texels per cell: the browser averages every pixel on the way,
+          // so a thin line survives as a grey one. Sampled at full size, most cells would miss it.
+          small.height = Math.round((small.width * img.naturalHeight) / img.naturalWidth);
+          const s = small.getContext("2d");
+          if (s) {
+            s.imageSmoothingQuality = "high";
+            s.drawImage(img, 0, 0, small.width, small.height);
+          }
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, s ? small : img);
           gl.uniform1f(uLight[k], brightness(img) > 0.6 ? 1 : 0);
           aspects[k] = img.naturalWidth / img.naturalHeight;
           slots[k] = want;
@@ -241,6 +331,14 @@ export default function Grain() {
         if (h > H * 0.8) [h, w] = [H * 0.8, H * 0.8 * aspect];
         gl.uniform4f(uBox[i], W - w - W * 0.05, (H - h) / 2, w, h);
       });
+      // The patch trails the pointer a little and fades in and out. Reduced motion: no patch.
+      const ease = 1 - Math.exp(-dt * 8);
+      ptr.x += (ptr.tx - ptr.x) * ease;
+      ptr.y += (ptr.ty - ptr.y) * ease;
+      ptr.on += Math.max(-dt * 3, Math.min(dt * 3, (still.matches ? 0 : ptr.want) - ptr.on));
+      const scale = W / innerWidth;
+      gl.uniform3f(uPtr, ptr.x * scale, (innerHeight - ptr.y) * scale, ptr.on);
+      gl.uniform1f(uLive, still.matches ? 0 : 1);
       gl.uniform1f(uM, mix);
       gl.uniform1f(uX, x);
       gl.uniform1f(uT, (now - start) / 1000);
@@ -253,20 +351,35 @@ export default function Grain() {
     };
 
     const size = () => {
-      const dpr = Math.min(devicePixelRatio, 1.5);
+      const dpr = Math.min(devicePixelRatio, 2); // type goes soft when the canvas is stretched, so up to 2×
       c.width = Math.round(innerWidth * dpr);
       c.height = Math.round(innerHeight * dpr);
       gl.viewport(0, 0, c.width, c.height);
       gl.uniform2f(uR, c.width, c.height);
+      atlas(Math.round(CELL * dpr));
       kick();
+    };
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      [ptr.tx, ptr.ty] = [e.clientX, e.clientY];
+      if (!ptr.on) [ptr.x, ptr.y] = [ptr.tx, ptr.ty]; // arriving: appear under the pointer, don't fly in
+      ptr.want = 1;
+      kick();
+    };
+    const onLeave = () => {
+      ptr.want = 0;
     };
     // Grain is drawn in the current ink colour, read from the CSS custom property.
     const theme = () => {
       // Safari shortens "#ffffff" to "#fff", so accept both.
-      let hex = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim().slice(1);
-      if (hex.length === 3) hex = hex.replace(/./g, "$&$&");
-      const n = /^[0-9a-f]{6}$/i.test(hex) ? parseInt(hex, 16) : 0;
+      const colour = (name: string) => {
+        let hex = getComputedStyle(document.documentElement).getPropertyValue(name).trim().slice(1);
+        if (hex.length === 3) hex = hex.replace(/./g, "$&$&");
+        return /^[0-9a-f]{6}$/i.test(hex) ? parseInt(hex, 16) : 0;
+      };
+      const n = colour("--ink"), s = colour("--signal");
       gl.uniform3f(uInk, ((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+      gl.uniform3f(uSignal, ((s >> 16) & 255) / 255, ((s >> 8) & 255) / 255, (s & 255) / 255);
       gl.uniform1f(uDark, n > 0x808080 ? 1 : 0);
       kick();
     };
@@ -290,8 +403,12 @@ export default function Grain() {
     still.addEventListener("change", kick);
     addEventListener("resize", size);
     addEventListener("grain", onGrain);
+    addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
     addEventListener("scroll", kick, { passive: true }); // the frame picks the section; this wakes it under reduced motion
     return () => {
+      removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
       removeEventListener("scroll", kick);
       cancelAnimationFrame(raf);
       observer.disconnect();
