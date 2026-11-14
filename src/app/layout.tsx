@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     google: "TnxEcHE1XPeimczF5oVyymXNNpTZ4JK3W5i7gMOn2T4",
   },
   openGraph: {
-    title: "Teuku Fazariz Basya",
+    title: "Teuku Fazariz Basya - DevOps Engineer",
     description:
       "Teuku Fazariz Basya - DevOps engineer working with CI/CD, Kubernetes, and Terraform on AWS.",
     url: "https://teukufazariz.vercel.app",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Teuku Fazariz Basya",
+    title: "Teuku Fazariz Basya - DevOps Engineer",
     description:
       "Teuku Fazariz Basya - DevOps engineer working with CI/CD, Kubernetes, and Terraform on AWS.",
   },
@@ -66,7 +66,13 @@ export default function RootLayout({
               "@id": "https://teukufazariz.vercel.app/#person",
               name: "Teuku Fazariz Basya",
               url: "https://teukufazariz.vercel.app",
+              alternateName: "Riz",
               jobTitle: "DevOps Engineer",
+              description:
+                "DevOps engineer based in Jakarta, working with CI/CD, Kubernetes, GitOps and Terraform on AWS.",
+              knowsAbout: ["DevOps", "CI/CD", "Kubernetes", "GitOps", "Terraform", "Amazon Web Services", "Argo CD"],
+              alumniOf: { "@type": "CollegeOrUniversity", name: "Multimedia Nusantara University" },
+              address: { "@type": "PostalAddress", addressLocality: "Jakarta", addressCountry: "ID" },
               sameAs: [
                 "https://www.linkedin.com/in/teukufazarizbasya/",
                 "https://github.com/teukufazariz",

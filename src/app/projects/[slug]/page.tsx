@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   return {
     title: project.title,
     description: project.description,
+    alternates: { canonical: `/projects/${slug}` },
     // Without a screenshot, the page inherits the site image from src/app/opengraph-image.tsx.
     openGraph: {
       title: project.title,

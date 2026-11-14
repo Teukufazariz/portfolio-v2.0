@@ -4,6 +4,9 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { experiences, formatRange, monthIndex, timeline } from "@/data/portfolio";
 
+// Set per page, not in the layout: a canonical there would point every case study at the home page.
+export const metadata = { alternates: { canonical: "/" } };
+
 const byStart = (a: { start: string }, b: { start: string }) => a.start.localeCompare(b.start);
 
 // Each employer as a lane, followed by the projects made there, oldest first.
