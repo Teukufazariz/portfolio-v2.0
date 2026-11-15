@@ -74,7 +74,7 @@ export const experiences: Experience[] = [
           "Built the scheduled-jobs view for Kubernetes CronJobs and Cloud Scheduler jobs, with unit tests",
           "On my own initiative, built the Datadog tab's request, error-rate and p99 latency graphs, endpoints table, error-tracking issues and recent traces, on top of a teammate's first monitors card",
           "Moved Datadog calls behind an allowlisted backend route that answers only the portal's own requests and trims each response to the fields shown",
-          "Wrote the Jenkins build and the production app config, switched the Bitbucket integration to an API token, and pointed Argo CD at an in-cluster address",
+          "Wrote half the production app config, fixed the Jenkins build agent, switched the Bitbucket integration to an API token, and pointed Argo CD at an in-cluster address",
         ],
         technologies: ["Backstage", "GKE", "Cloud SQL", "Jenkins", "Argo CD", "Datadog"],
         image: "/projects/Nanovest.png",
