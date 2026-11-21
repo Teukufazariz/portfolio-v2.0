@@ -1,25 +1,15 @@
-import { MetadataRoute } from "next";
-import { experiences } from "@/data/portfolio";
+import type { MetadataRoute } from "next";
+import { site, work } from "@/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://teukufazariz.vercel.app";
-
-  const projectUrls = experiences
-    .flatMap((exp) => exp.projects)
-    .map((project) => ({
-      url: `${baseUrl}/projects/${project.slug}`,
-      lastModified: new Date(),
+  const lastModified = new Date();
+  return [
+    { url: site.url, lastModified, changeFrequency: "monthly", priority: 1 },
+    ...work.map((w) => ({
+      url: `${site.url}/work/${w.slug}`,
+      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.8,
-    }));
-
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    ...projectUrls,
+    })),
   ];
 }
